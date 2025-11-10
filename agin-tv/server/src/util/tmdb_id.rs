@@ -8,29 +8,21 @@ use serde_with::{DeserializeFromStr, SerializeDisplay};
 pub enum TmdbId {
     Movie(i32),
     TvShow(i32),
-    Custom(String),
+    Custom(i32),
 }
 
 impl std::str::FromStr for TmdbId {
     type Err = sea_orm::sea_query::ValueTypeErr;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        if let Some(stripped) = s.strip_prefix('m') {
-            Ok(TmdbId::Movie(
-                stripped
-                    .parse()
-                    .map_err(|_| sea_orm::sea_query::ValueTypeErr)?,
-            ))
-        } else if let Some(stripped) = s.strip_prefix('t') {
-            Ok(TmdbId::TvShow(
-                stripped
-                    .parse()
-                    .map_err(|_| sea_orm::sea_query::ValueTypeErr)?,
-            ))
-        } else if let Some(stripped) = s.strip_prefix('c') {
-            Ok(TmdbId::Custom(stripped.to_string()))
-        } else {
-            Err(sea_orm::sea_query::ValueTypeErr)
+        let (prefix, id) = s.split_at(1);
+        let parsed_id = id.parse().map_err(|_| sea_orm::sea_query::ValueTypeErr)?;
+
+        match prefix {
+            "m" => Ok(TmdbId::Movie(parsed_id)),
+            "t" => Ok(TmdbId::TvShow(parsed_id)),
+            "c" => Ok(TmdbId::Custom(parsed_id)),
+            _ => Err(sea_orm::sea_query::ValueTypeErr),
         }
     }
 }
