@@ -3,6 +3,7 @@ use std::net::SocketAddr;
 use axum::{Extension, Json, Router, response::IntoResponse, routing::get};
 use color_eyre::Result;
 use http::StatusCode;
+use sea_orm::Database;
 use tokio::net::TcpListener;
 use tracing::{instrument, level_filters::LevelFilter};
 use tracing_error::ErrorLayer;
@@ -63,4 +64,13 @@ pub async fn init_listener(settings: &Settings) -> Result<TcpListener> {
     let addr: Vec<SocketAddr> = settings.general.listen_address.clone().into();
 
     Ok(TcpListener::bind(addr.as_slice()).await?)
+}
+
+pub async fn init_database(settings: &Settings) -> Result<sea_orm::DatabaseConnection> {
+    let db = Database::connect(settings.db.connection_string.clone()).await?;
+    db.get_schema_registry("server::entity::*")
+        .sync(&db)
+        .await?;
+
+    Ok(db)
 }

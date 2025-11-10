@@ -1,17 +1,20 @@
+mod entity;
 mod init;
 mod routes;
 mod settings;
 mod state;
+mod util;
 
 use std::sync::Arc;
 
 use color_eyre::{Result, eyre::Context};
 use rustls::crypto::{CryptoProvider, aws_lc_rs};
+use sea_orm::{ActiveModelTrait, ActiveValue::Set, EntityTrait};
 use tracing::{info, level_filters::LevelFilter};
 use utoipa::OpenApi;
 
 use crate::{
-    init::{init_axum, init_listener, init_tracing},
+    init::{init_axum, init_database, init_listener, init_tracing},
     settings::Settings,
     state::AppState,
 };
@@ -39,12 +42,32 @@ async fn main() -> Result<()> {
 
     let settings = Arc::new(Settings::try_load()?);
 
+    let db = init_database(&settings).await?;
+
     let app_state = AppState {
         settings: settings.clone(),
+        db: db.clone(),
     };
 
     let app = init_axum(app_state).await?;
     let listener = init_listener(&settings).await?;
+
+    let m = crate::entity::movie::ActiveModel {
+        backdrop: Set("test".to_string()),
+        r#type: Set(entity::movie::ContentType::Movie),
+        title: Set("test".to_string()),
+        overview: Set("test".to_string()),
+        tagline: Set(None),
+        poster: Set("test".to_string()),
+        horizontal_poster: Set(None),
+        tmdb_id: Set(util::tmdb_id::TmdbId::Movie(123)),
+        ..Default::default()
+    };
+
+    m.insert(&db).await?;
+
+    let movies = crate::entity::movie::Entity::find().all(&db).await?;
+    dbg!(&movies);
 
     info!(
         "listening on {} ({})",
