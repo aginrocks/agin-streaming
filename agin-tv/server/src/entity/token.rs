@@ -1,5 +1,7 @@
 use chrono::{DateTime, Utc};
 use sea_orm::entity::prelude::*;
+use serde::Deserialize;
+use utoipa::ToSchema;
 
 #[sea_orm::model]
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel)]
@@ -24,7 +26,8 @@ pub struct Model {
     pub created_at: DateTime<Utc>,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Deserialize, ToSchema)]
+#[serde(rename_all = "snake_case")]
 #[sea_orm(
     rs_type = "String",
     db_type = "String(StringLen::None)",
@@ -36,7 +39,8 @@ pub enum DeviceType {
     Tv,
 }
 
-#[derive(Clone, Copy, Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Deserialize, ToSchema)]
+#[serde(rename_all = "snake_case")]
 #[sea_orm(
     rs_type = "String",
     db_type = "String(StringLen::None)",

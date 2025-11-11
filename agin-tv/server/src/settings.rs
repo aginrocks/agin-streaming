@@ -6,6 +6,7 @@ use http::Uri;
 use serde::{Deserialize, Serialize};
 use strum::{AsRefStr, Display, EnumString, IntoStaticStr};
 use tracing::warn;
+use utoipa::ToSchema;
 
 const ENV_PREFIX: &str = "AGINTV";
 const ENV_SEPARATOR: &str = "__";
@@ -55,6 +56,15 @@ pub struct Redis {
     pub connection_string: String,
 }
 
+#[derive(Debug, Deserialize, Serialize, Clone, ToSchema)]
+pub struct Oidc {
+    #[serde(with = "http_serde_ext::uri")]
+    #[schema(value_type = String)]
+    pub issuer: Uri,
+
+    pub client_id: String,
+}
+
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum KubernetesMode {
@@ -72,6 +82,7 @@ pub struct Settings {
     pub general: General,
     pub db: Db,
     pub redis: Redis,
+    pub oidc: Oidc,
     pub kubernetes: Kubernetes,
 }
 
@@ -145,6 +156,12 @@ impl Settings {
             },
             redis: Redis {
                 connection_string: "redis://localhost:6379".to_string(),
+            },
+            oidc: Oidc {
+                issuer: "https://example.com"
+                    .parse()
+                    .expect("hardcoded uri should parse"),
+                client_id: "your-client-id".to_string(),
             },
             kubernetes: Kubernetes {
                 mode: KubernetesMode::Kubeconfig,
