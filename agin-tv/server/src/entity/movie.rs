@@ -9,6 +9,7 @@ use crate::util::tmdb_id::TmdbId;
 #[sea_orm::model]
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel, Serialize, ToSchema)]
 #[sea_orm(table_name = "movies")]
+#[schema(title = "Movie")]
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,

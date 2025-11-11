@@ -1,12 +1,15 @@
 use axum::{Extension, Json};
 use axum_valid::Valid;
+use chrono::Utc;
+use sea_orm::{ActiveModelTrait, ActiveValue::Set};
 use serde::{Deserialize, Serialize};
 use utoipa::ToSchema;
 use utoipa_axum::{router::OpenApiRouter, routes};
 use validator::Validate;
 
 use crate::{
-    entity::token::{DeviceType, Platform},
+    entity::token::{self, DeviceType, Platform},
+    errors::AxumResult,
     settings::Oidc,
     state::AppState,
     util::tokens::{generate_token, hash_token},
@@ -50,13 +53,25 @@ pub struct LoginResponse {
 async fn login(
     Extension(state): Extension<AppState>,
     Valid(Json(body)): Valid<Json<LoginRequest>>,
-) -> Json<LoginResponse> {
+) -> AxumResult<Json<LoginResponse>> {
     // TODO: Validate user
 
     let token = generate_token();
     let hashed_token = hash_token(&token);
 
+    let token_entry = token::ActiveModel {
+        user_id: todo!(),
+        token_hash: Set(hashed_token),
+        device_name: Set(body.device_name),
+        device_type: Set(body.device_type),
+        platform: Set(body.platform),
+        created_at: Set(Utc::now()),
+        ..Default::default()
+    };
+
+    token_entry.insert(&state.db).await?;
+
     // TODO: Save the hashed token to the database along with device info
 
-    Json(LoginResponse { token })
+    Ok(Json(LoginResponse { token }))
 }

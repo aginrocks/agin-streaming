@@ -12,6 +12,7 @@ pub fn routes() -> OpenApiRouter<AppState> {
 }
 
 #[derive(Deserialize, Validate, IntoParams)]
+#[into_params(parameter_in = Query)]
 pub struct SearchParams {
     pub query: String,
 }
@@ -31,7 +32,8 @@ pub struct SearchResults {
 ///
 /// > [!WARNING]
 /// > Some fields are marked as optional, because at the time of querying TMDB they may not be available.
-/// > For example, if your search query matches a movie that wasn't previously viewed by anyone using the instance, some fields may be unavaliable until you request more details about that movie.
+/// > For example, if your search query matches a movie that wasn't previously viewed by anyone using the instance,
+/// > some fields may be unavaliable until you request more details about that movie.
 /// > In that case, **ID will be set to `0`**
 #[utoipa::path(
     method(get),
