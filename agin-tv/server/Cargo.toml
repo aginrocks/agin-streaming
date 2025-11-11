@@ -57,3 +57,4 @@ validator = { version = "0.20.0", features = ["derive"] }
 visible = "0.0.1"
 sea-orm = { version = "2.0.0-rc.18", features = ["sqlx-postgres", "runtime-tokio-rustls", "with-chrono", "with-json", "with-uuid", "schema-sync", "entity-registry"] }
 serde_with = "3.15.1"
+rust_decimal = "1.39.0"

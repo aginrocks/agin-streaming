@@ -6,6 +6,7 @@ use sea_orm::entity::prelude::*;
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
+    #[sea_orm(indexed)]
     pub movie_id: i32,
     #[sea_orm(belongs_to, from = "movie_id", to = "id")]
     pub movie: HasOne<super::movie::Entity>,

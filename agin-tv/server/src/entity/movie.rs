@@ -8,6 +8,7 @@ use crate::util::tmdb_id::TmdbId;
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
+    #[sea_orm(indexed, unique)]
     pub tmdb_id: TmdbId,
     pub r#type: ContentType,
     pub title: String,
