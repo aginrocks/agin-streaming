@@ -8,4 +8,5 @@ use crate::settings::Settings;
 pub struct AppState {
     pub settings: Arc<Settings>,
     pub db: DatabaseConnection,
+    pub tmdb: Arc<tmdb_api::client::ReqwestClient>,
 }

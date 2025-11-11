@@ -65,6 +65,11 @@ pub struct Oidc {
     pub client_id: String,
 }
 
+#[derive(Debug, Deserialize, Serialize, Clone, ToSchema)]
+pub struct Tmdb {
+    pub access_token: String,
+}
+
 #[derive(Debug, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum KubernetesMode {
@@ -83,6 +88,7 @@ pub struct Settings {
     pub db: Db,
     pub redis: Redis,
     pub oidc: Oidc,
+    pub tmdb: Tmdb,
     pub kubernetes: Kubernetes,
 }
 
@@ -162,6 +168,9 @@ impl Settings {
                     .parse()
                     .expect("hardcoded uri should parse"),
                 client_id: "your-client-id".to_string(),
+            },
+            tmdb: Tmdb {
+                access_token: "your-tmdb-access-token".to_string(),
             },
             kubernetes: Kubernetes {
                 mode: KubernetesMode::Kubeconfig,

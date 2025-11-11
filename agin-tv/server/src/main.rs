@@ -1,4 +1,5 @@
 mod entity;
+mod errors;
 mod init;
 mod routes;
 mod settings;
@@ -13,7 +14,7 @@ use tracing::{info, level_filters::LevelFilter};
 use utoipa::OpenApi;
 
 use crate::{
-    init::{init_axum, init_database, init_listener, init_tracing},
+    init::{init_axum, init_database, init_listener, init_tmdb, init_tracing},
     settings::Settings,
     state::AppState,
 };
@@ -43,9 +44,12 @@ async fn main() -> Result<()> {
 
     let db = init_database(&settings).await?;
 
+    let tmdb = Arc::new(init_tmdb(&settings));
+
     let app_state = AppState {
         settings: settings.clone(),
         db,
+        tmdb,
     };
 
     let app = init_axum(app_state).await?;

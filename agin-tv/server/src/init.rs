@@ -74,3 +74,7 @@ pub async fn init_database(settings: &Settings) -> Result<sea_orm::DatabaseConne
 
     Ok(db)
 }
+
+pub fn init_tmdb(settings: &Settings) -> tmdb_api::client::ReqwestClient {
+    tmdb_api::client::Client::new(settings.tmdb.access_token.clone())
+}

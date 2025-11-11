@@ -2,6 +2,7 @@ use std::fmt::Display;
 
 use sea_orm::entity::prelude::*;
 use serde_with::{DeserializeFromStr, SerializeDisplay};
+use utoipa::{PartialSchema, ToSchema};
 
 #[derive(Debug, Clone, PartialEq, Eq, DeriveValueType, SerializeDisplay, DeserializeFromStr)]
 #[sea_orm(value_type = "String")]
@@ -34,5 +35,28 @@ impl Display for TmdbId {
             TmdbId::TvShow(id) => write!(f, "t{id}"),
             TmdbId::Custom(id) => write!(f, "c{id}"),
         }
+    }
+}
+
+impl ToSchema for TmdbId {
+    fn name() -> std::borrow::Cow<'static, str> {
+        std::borrow::Cow::Borrowed("TmdbId")
+    }
+}
+
+impl PartialSchema for TmdbId {
+    fn schema() -> utoipa::openapi::RefOr<utoipa::openapi::schema::Schema> {
+        utoipa::openapi::ObjectBuilder::new()
+            .schema_type(utoipa::openapi::schema::Type::String)
+            .description(
+                "For movies, id prefixed with `m`, for TV shows with `t` and for other IDs with `c`"
+                    .into(),
+            )
+            .examples(
+                vec![
+                    serde_json::json!("t1399")
+                ]
+            )
+            .into()
     }
 }

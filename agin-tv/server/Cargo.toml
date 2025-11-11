@@ -58,3 +58,6 @@ visible = "0.0.1"
 sea-orm = { version = "2.0.0-rc.18", features = ["sqlx-postgres", "runtime-tokio-rustls", "with-chrono", "with-json", "with-uuid", "schema-sync", "entity-registry"] }
 serde_with = "3.15.1"
 rust_decimal = "1.39.0"
+tmdb-api = { git = "https://github.com/TymekV/tmdb-api.git", branch = "feat/multi-search" }
+thiserror = "2.0.17"
+miette = "7.6.0"
