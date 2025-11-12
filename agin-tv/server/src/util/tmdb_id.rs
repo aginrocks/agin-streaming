@@ -4,7 +4,9 @@ use sea_orm::entity::prelude::*;
 use serde_with::{DeserializeFromStr, SerializeDisplay};
 use utoipa::{PartialSchema, ToSchema};
 
-#[derive(Debug, Clone, PartialEq, Eq, DeriveValueType, SerializeDisplay, DeserializeFromStr)]
+#[derive(
+    Debug, Clone, PartialEq, Eq, DeriveValueType, SerializeDisplay, DeserializeFromStr, Copy, Hash,
+)]
 #[sea_orm(value_type = "String")]
 pub enum TmdbId {
     Movie(i32),

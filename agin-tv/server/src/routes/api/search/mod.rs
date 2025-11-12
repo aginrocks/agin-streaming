@@ -1,6 +1,12 @@
+use std::collections::HashMap;
+
 use axum::{Extension, Json, extract::Query};
 use axum_valid::Valid;
+use color_eyre::eyre::Result;
+use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 use serde::{Deserialize, Serialize};
+use tmdb_api::multi::MultiSearchResult;
+use tracing::instrument;
 use utoipa::{IntoParams, ToSchema};
 use utoipa_axum::{router::OpenApiRouter, routes};
 use validator::Validate;
@@ -55,12 +61,32 @@ async fn search(
         .search_multi(params.query.clone(), &Default::default())
         .await?;
 
-    let results = results
-        .results
+    let mut converted = Vec::with_capacity(results.results.len());
+    let mut tmdb_ids = Vec::with_capacity(results.results.len());
+
+    for result in results.results {
+        if let Ok(model) = movie::Model::try_from(result) {
+            tmdb_ids.push(model.tmdb_id);
+            converted.push(model);
+        }
+    }
+
+    let existing_movies = movie::Entity::find()
+        .filter(movie::Column::TmdbId.is_in(tmdb_ids.clone()))
+        .all(&state.db)
+        .await?;
+
+    let existing_map = existing_movies
         .into_iter()
-        .map(movie::Model::try_from)
-        .filter_map(|r| r.ok())
+        .map(|m| (m.tmdb_id, m))
+        .collect::<HashMap<_, _>>();
+
+    let merged_results = converted
+        .into_iter()
+        .map(|m| existing_map.get(&m.tmdb_id).cloned().unwrap_or(m))
         .collect::<Vec<_>>();
 
-    Ok(Json(SearchResults { results }))
+    Ok(Json(SearchResults {
+        results: merged_results,
+    }))
 }
