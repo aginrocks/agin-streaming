@@ -2,11 +2,8 @@ use std::collections::HashMap;
 
 use axum::{Extension, Json, extract::Query};
 use axum_valid::Valid;
-use color_eyre::eyre::Result;
-use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
+use sea_orm::{ColumnTrait, EntityTrait, QueryFilter};
 use serde::{Deserialize, Serialize};
-use tmdb_api::multi::MultiSearchResult;
-use tracing::instrument;
 use utoipa::{IntoParams, ToSchema};
 use utoipa_axum::{router::OpenApiRouter, routes};
 use validator::Validate;
