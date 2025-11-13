@@ -1,6 +1,6 @@
 use crate::{
     entity::episode,
-    util::importer::{FetchPolicy, ImporterError, MovieDetails},
+    importer::{FetchPolicy, ImporterError, MovieDetails},
 };
 
 impl super::TmdbImporter {

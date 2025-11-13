@@ -6,13 +6,10 @@ use std::sync::Arc;
 use async_trait::async_trait;
 use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
 
-pub use crate::util::importer::Importer;
 use crate::{
     entity::{episode, movie},
-    util::{
-        importer::{FetchPolicy, ImporterError, MovieDetails},
-        tmdb::id::TmdbId,
-    },
+    importer::{FetchPolicy, Importer, ImporterError, MovieDetails},
+    util::tmdb::id::TmdbId,
 };
 
 pub struct TmdbImporter {

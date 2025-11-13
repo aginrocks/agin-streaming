@@ -2,7 +2,7 @@ use sea_orm::{ActiveValue::Set, EntityTrait, sea_query::OnConflict};
 
 use crate::{
     entity::{episode, movie},
-    util::importer::{ImporterError, MovieDetails},
+    importer::{ImporterError, MovieDetails},
 };
 
 impl super::TmdbImporter {

@@ -1,17 +1,11 @@
 use axum::{Extension, Json, extract::Path};
-use sea_orm::{ColumnTrait, EntityTrait, QueryFilter};
-use serde::Serialize;
-use utoipa::ToSchema;
 use utoipa_axum::{router::OpenApiRouter, routes};
 
 use crate::{
-    entity::{episode, movie},
     errors::AxumResult,
+    importer::{FetchPolicy, Importer, MovieDetails, tmdb::TmdbImporter},
     state::AppState,
-    util::{
-        importer::{FetchPolicy, Importer, MovieDetails},
-        tmdb::{id::TmdbId, import::TmdbImporter},
-    },
+    util::tmdb::TmdbId,
 };
 
 pub fn routes() -> OpenApiRouter<AppState> {

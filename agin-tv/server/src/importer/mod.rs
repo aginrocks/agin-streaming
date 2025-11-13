@@ -1,3 +1,5 @@
+pub mod tmdb;
+
 use async_trait::async_trait;
 use sea_orm::DbErr;
 use serde::Serialize;
