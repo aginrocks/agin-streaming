@@ -1,10 +1,10 @@
-use sea_orm::entity::prelude::*;
+use sea_orm::{ActiveValue::Set, entity::prelude::*};
 use serde::Serialize;
 use thiserror::Error;
 use tmdb_api::multi::MultiSearchResult;
 use utoipa::ToSchema;
 
-use crate::util::tmdb_id::TmdbId;
+use crate::util::tmdb::id::TmdbId;
 
 #[sea_orm::model]
 #[derive(Clone, Debug, PartialEq, Eq, DeriveEntityModel, Serialize, ToSchema)]
@@ -19,9 +19,9 @@ pub struct Model {
     pub title: String,
     pub overview: String,
     pub tagline: Option<String>,
-    pub poster: String,
+    pub poster: Option<String>,
     pub horizontal_poster: Option<String>,
-    pub backdrop: String,
+    pub backdrop: Option<String>,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq, EnumIter, DeriveActiveEnum, Serialize, ToSchema)]
@@ -48,8 +48,8 @@ impl TryFrom<MultiSearchResult> for Model {
             MultiSearchResult::Movie(movie) => Ok(Model {
                 id: 0,
                 tmdb_id: TmdbId::Movie(movie.inner.id as i32),
-                backdrop: movie.inner.backdrop_path.unwrap_or_default(),
-                poster: movie.inner.poster_path.unwrap_or_default(),
+                backdrop: movie.inner.backdrop_path,
+                poster: movie.inner.poster_path,
                 horizontal_poster: None,
                 overview: movie.inner.overview,
                 title: movie.inner.title,
@@ -59,8 +59,8 @@ impl TryFrom<MultiSearchResult> for Model {
             MultiSearchResult::TVShow(tv) => Ok(Model {
                 id: 0,
                 tmdb_id: TmdbId::TvShow(tv.inner.id as i32),
-                backdrop: tv.inner.backdrop_path.unwrap_or_default(),
-                poster: tv.inner.poster_path.unwrap_or_default(),
+                backdrop: tv.inner.backdrop_path,
+                poster: tv.inner.poster_path,
                 horizontal_poster: None,
                 overview: tv.inner.overview.unwrap_or_default(),
                 title: tv.inner.name,
@@ -68,6 +68,23 @@ impl TryFrom<MultiSearchResult> for Model {
                 r#type: ContentType::Tv,
             }),
             MultiSearchResult::Person(_) => Err(MultiSearchConvertError),
+        }
+    }
+}
+
+impl From<tmdb_api::movie::Movie> for ActiveModel {
+    fn from(value: tmdb_api::movie::Movie) -> Self {
+        ActiveModel {
+            tmdb_id: Set(TmdbId::Movie(value.inner.id as i32)),
+            r#type: Set(ContentType::Movie),
+            title: Set(value.inner.title),
+            overview: Set(value.inner.overview),
+            tagline: Set(value.tagline),
+            poster: Set(value.inner.poster_path),
+            // TODO: import from `images`
+            horizontal_poster: Set(None),
+            backdrop: Set(value.inner.backdrop_path),
+            ..Default::default()
         }
     }
 }

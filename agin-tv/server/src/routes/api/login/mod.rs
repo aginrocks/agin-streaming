@@ -10,7 +10,6 @@ use validator::Validate;
 use crate::{
     entity::token::{self, DeviceType, Platform},
     errors::AxumResult,
-    settings::Oidc,
     state::AppState,
     util::tokens::{generate_token, hash_token},
 };

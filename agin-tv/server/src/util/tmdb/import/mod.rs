@@ -1,0 +1,70 @@
+pub mod movie_import;
+pub mod tv_import;
+
+use std::sync::Arc;
+
+use async_trait::async_trait;
+use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
+
+pub use crate::util::importer::Importer;
+use crate::{
+    entity::{episode, movie},
+    util::{
+        importer::{FetchPolicy, ImporterError, MovieDetails},
+        tmdb::id::TmdbId,
+    },
+};
+
+pub struct TmdbImporter {
+    tmdb: Arc<tmdb_api::client::ReqwestClient>,
+    db: DatabaseConnection,
+}
+
+impl TmdbImporter {
+    pub fn new(tmdb: Arc<tmdb_api::client::ReqwestClient>, db: DatabaseConnection) -> Self {
+        Self { tmdb, db }
+    }
+}
+
+#[async_trait]
+impl Importer for TmdbImporter {
+    async fn import(
+        &self,
+        tmdb_id: TmdbId,
+        fetch_policy: FetchPolicy,
+    ) -> Result<MovieDetails, ImporterError> {
+        let details = movie::Entity::find_by_tmdb_id(tmdb_id)
+            .one(&self.db)
+            .await?;
+
+        if let Some(details) = details {
+            let episodes = episode::Entity::find()
+                .filter(episode::Column::MovieId.eq(details.id))
+                .all(&self.db)
+                .await?;
+
+            match fetch_policy {
+                FetchPolicy::IfNotExists => Ok(MovieDetails {
+                    movie: details,
+                    episodes,
+                }),
+                _ => self.update(tmdb_id, episodes, fetch_policy).await,
+            }
+        } else {
+            self.update(tmdb_id, vec![], fetch_policy).await
+        }
+    }
+
+    async fn update(
+        &self,
+        tmdb_id: TmdbId,
+        episodes: Vec<episode::Model>,
+        fetch_policy: FetchPolicy,
+    ) -> Result<MovieDetails, ImporterError> {
+        match tmdb_id {
+            TmdbId::Movie(id) => self.update_movie(id).await,
+            TmdbId::TvShow(id) => self.update_tv_show(id, episodes, fetch_policy).await,
+            _ => Err(ImporterError::UnsupportedMediaType),
+        }
+    }
+}
