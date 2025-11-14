@@ -10,7 +10,7 @@ use crate::{
     errors::AxumResult,
     importer::{FetchPolicy, Importer, MovieDetails, tmdb::TmdbImporter},
     state::AppState,
-    util::{opt_bool_from_string, tmdb::TmdbId},
+    util::tmdb::TmdbId,
 };
 
 pub fn routes() -> OpenApiRouter<AppState> {

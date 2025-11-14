@@ -2,7 +2,7 @@ use futures::future::join_all;
 use sea_orm::{ActiveValue::Set, EntityTrait, sea_query::OnConflict};
 use tmdb_api::tvshow::{Season, TVShow};
 use tokio::try_join;
-use tracing::{debug, info, instrument};
+use tracing::{debug, instrument};
 
 use crate::{
     entity::{episode, movie},
