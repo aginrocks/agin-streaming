@@ -3,16 +3,23 @@ syntax = "proto3";
 package rocks.agin.tv.plugin;
 
 message PluginInfo {
-    required string id = 1;
+    string id = 1;
     string display_name = 2;
     string version = 3;
     repeated Service services = 4;
 }
 
+enum ContentType {
+    MOVIE = 0;
+    TV_SHOW = 1;
+}
+
 // Service represents a single contribution point of the plugin.
 message Service {
-    required string id = 1;
-    required ServiceType type = 2;
+    string id = 1;
+    ServiceType type = 2;
+    // List of provider ids that this service can handle
+    repeated string supports = 3;
 }
 
 enum ServiceType {
@@ -26,6 +33,56 @@ enum ServiceType {
 
 // Search service types
 
+service SearchService {
+    rpc Search (SearchRequest) returns (SearchResponses);
+}
+
 message SearchRequest {
-    required string title = 1;
+    ContentType type = 1;
+    int32 tmdb_id = 2;
+    string title = 3;
+}
+
+message SearchResponses {
+    repeated SearchResponse results = 1;
+}
+
+// Returns the auto-matched result
+message SearchResponse {
+    // The id that will route the match to target services
+    string provider_id = 1;
+
+    // An identifier that will allow the target service to recognize the content without performing a search
+    string match = 2;
+}
+
+// Source provider service types
+
+service SourceProviderService {
+    rpc GetSources (SourceRequest) returns (SourceResponse);
+}
+
+message SourceRequest {
+    // Targeted service_id inside this extension
+    string service_id = 1;
+
+    ContentType type = 2;
+
+    int32 tmdb_id = 3;
+
+    // If a search match targeting this service is cached, it will be provide
+    optional string match = 4;
+
+    optional int32 season = 5;
+
+    optional int32 episode = 6;
+}
+
+message SourceResponse {
+    repeated Source sources = 1;
+}
+
+message Source {
+    // Service id that will resolve this source
+    string service_id = 1;
 }
