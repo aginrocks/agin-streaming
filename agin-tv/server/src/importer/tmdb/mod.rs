@@ -45,22 +45,21 @@ impl Importer for TmdbImporter {
                     movie: details,
                     episodes,
                 }),
-                _ => self.update(tmdb_id, episodes, fetch_policy).await,
+                _ => self.update(tmdb_id, Some(details)).await,
             }
         } else {
-            self.update(tmdb_id, vec![], fetch_policy).await
+            self.update(tmdb_id, None).await
         }
     }
 
     async fn update(
         &self,
         tmdb_id: TmdbId,
-        episodes: Vec<episode::Model>,
-        fetch_policy: FetchPolicy,
+        details: Option<movie::Model>,
     ) -> Result<MovieDetails, ImporterError> {
         match tmdb_id {
             TmdbId::Movie(id) => self.update_movie(id).await,
-            TmdbId::TvShow(id) => self.update_tv_show(id, episodes, fetch_policy).await,
+            TmdbId::TvShow(id) => self.update_tv_show(id, details).await,
             _ => Err(ImporterError::UnsupportedMediaType),
         }
     }

@@ -34,7 +34,7 @@ pub enum ImporterError {
 pub enum FetchPolicy {
     #[default]
     IfNotExists,
-    OnlyMissingEpisodes,
+    // OnlyMissingEpisodes,
     Always,
 }
 
@@ -51,7 +51,6 @@ pub trait Importer {
     async fn update(
         &self,
         tmdb_id: TmdbId,
-        episodes: Vec<episode::Model>,
-        fetch_policy: FetchPolicy,
+        details: Option<movie::Model>,
     ) -> Result<MovieDetails, ImporterError>;
 }

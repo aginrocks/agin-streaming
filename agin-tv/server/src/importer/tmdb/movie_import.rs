@@ -16,14 +16,7 @@ impl super::TmdbImporter {
         let inserted_movie = movie::Entity::insert(model)
             .on_conflict(
                 OnConflict::column(movie::Column::TmdbId)
-                    .update_columns(vec![
-                        movie::Column::Title,
-                        movie::Column::Overview,
-                        movie::Column::Tagline,
-                        movie::Column::Poster,
-                        movie::Column::HorizontalPoster,
-                        movie::Column::Backdrop,
-                    ])
+                    .update_columns(movie::UPDATABLE_COLUMNS)
                     .to_owned(),
             )
             .exec_with_returning(&self.db)
@@ -41,18 +34,9 @@ impl super::TmdbImporter {
         };
         let inserted_episode = episode::Entity::insert(episode_model)
             .on_conflict(
-                OnConflict::columns(vec![
-                    episode::Column::MovieId,
-                    episode::Column::SeasonNumber,
-                    episode::Column::EpisodeNumber,
-                ])
-                .update_columns(vec![
-                    episode::Column::Name,
-                    episode::Column::Overview,
-                    episode::Column::Poster,
-                    episode::Column::Runtime,
-                ])
-                .to_owned(),
+                OnConflict::columns(episode::IDENTIFYING_COLUMNS)
+                    .update_columns(episode::UPDATABLE_COLUMNS)
+                    .to_owned(),
             )
             .exec_with_returning(&self.db)
             .await?;

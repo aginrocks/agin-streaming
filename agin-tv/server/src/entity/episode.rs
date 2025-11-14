@@ -1,4 +1,4 @@
-use sea_orm::entity::prelude::*;
+use sea_orm::{ActiveValue::Set, entity::prelude::*};
 use serde::Serialize;
 use utoipa::ToSchema;
 
@@ -25,3 +25,30 @@ pub struct Model {
 }
 
 impl ActiveModelBehavior for ActiveModel {}
+
+pub static IDENTIFYING_COLUMNS: [Column; 3] =
+    [Column::MovieId, Column::SeasonNumber, Column::EpisodeNumber];
+
+pub static UPDATABLE_COLUMNS: [Column; 4] = [
+    Column::Name,
+    Column::Overview,
+    Column::Poster,
+    Column::Runtime,
+];
+
+/// Converts TMDB Episode to Episode ActiveModel
+/// **Remember to set `movie_id` before inserting the model**
+impl From<tmdb_api::tvshow::Episode> for ActiveModel {
+    fn from(value: tmdb_api::tvshow::Episode) -> Self {
+        Self {
+            name: Set(value.inner.name),
+            overview: Set(value.inner.overview.unwrap_or_default()),
+            season_number: Set(value.inner.season_number as i32),
+            episode_number: Set(value.inner.episode_number as i32),
+            poster: Set(value.inner.still_path),
+            // TODO
+            runtime: Set(None),
+            ..Default::default()
+        }
+    }
+}
