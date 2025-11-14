@@ -2,20 +2,28 @@ use futures::future::join_all;
 use sea_orm::{ActiveValue::Set, EntityTrait, sea_query::OnConflict};
 use tmdb_api::tvshow::{Season, TVShow};
 use tokio::try_join;
+use tracing::{debug, info, instrument};
 
 use crate::{
     entity::{episode, movie},
     importer::{ImporterError, MovieDetails},
 };
 
+// TODO: Handle season 0
 impl super::TmdbImporter {
+    #[instrument(skip(self, details))]
     pub async fn update_tv_show(
         &self,
         tmdb_id: i32,
         details: Option<movie::Model>,
     ) -> Result<MovieDetails, ImporterError> {
+        const ADDITIONAL_SEASONS: usize = 1;
+
         // We guess the number of seasons to determine needed iterations before we know full details
-        let seasons_guess = details.and_then(|d| d.seasons).unwrap_or(0) as usize;
+        let seasons_guess =
+            details.and_then(|d| d.seasons).unwrap_or(0) as usize + ADDITIONAL_SEASONS;
+
+        debug!("Guessing {seasons_guess}");
 
         // Fetch metadata and new seasons concurrently
         let fetch_metadata = async {
@@ -23,7 +31,12 @@ impl super::TmdbImporter {
 
             // There are seasons we haven't accounted for yet
             let seasons = if details.seasons.len() > seasons_guess {
-                let jobs = (seasons_guess..=details.seasons.len())
+                debug!(
+                    "Unaccounted seasons found ({}..={})",
+                    seasons_guess + 1,
+                    details.seasons.len()
+                );
+                let jobs = ((seasons_guess + 1)..=details.seasons.len())
                     .map(async |s| self.fetch_season(tmdb_id, s as i32).await);
 
                 join_all(jobs)
@@ -32,6 +45,7 @@ impl super::TmdbImporter {
                     .filter_map(Result::ok)
                     .collect()
             } else {
+                debug!("No unaccounted seasons");
                 vec![]
             };
 
@@ -39,6 +53,7 @@ impl super::TmdbImporter {
         };
 
         let fetch_known_seasons = async {
+            debug!("Fetching known seasons (1..={seasons_guess})");
             let jobs =
                 (1..=seasons_guess).map(async |s| self.fetch_season(tmdb_id, s as i32).await);
 
