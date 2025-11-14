@@ -61,3 +61,4 @@ rust_decimal = "1.39.0"
 tmdb-api = { git = "https://github.com/TymekV/tmdb-api.git", branch = "feat/multi-search" }
 thiserror = "2.0.17"
 miette = "7.6.0"
+wyzie-subs = "0.1.0"
