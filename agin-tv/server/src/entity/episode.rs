@@ -8,7 +8,6 @@ use utoipa::ToSchema;
 pub struct Model {
     #[sea_orm(primary_key)]
     pub id: i32,
-    #[sea_orm(indexed)]
     #[sea_orm(unique_key = "movie")]
     pub movie_id: i32,
     #[schema(value_type = ())]
