@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package rocks.agin.tv.plugin;
+
+message PluginInfo {
+    required string id = 1;
+    string display_name = 2;
+    string version = 3;
+    repeated Service services = 4;
+}
+
+// Service represents a single contribution point of the plugin.
+message Service {
+    required string id = 1;
+    required ServiceType type = 2;
+}
+
+enum ServiceType {
+    // Optionally link the movie to a source provided by the plugin
+    SEARCH = 0;
+    // Based on the linked id or TMDB id, resolve the streaming sources
+    SOURCE_PROVIDER = 1;
+    // Resolve a link to a streaming source or reference to another resolver
+    LINK_RESOLVER = 2;
+}
+
+// Search service types
+
+message SearchRequest {
+    required string title = 1;
+}
