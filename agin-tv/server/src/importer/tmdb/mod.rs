@@ -4,7 +4,7 @@ pub mod tv_import;
 use std::sync::Arc;
 
 use async_trait::async_trait;
-use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter};
+use sea_orm::{ColumnTrait, DatabaseConnection, EntityTrait, QueryFilter, QueryOrder};
 
 use crate::{
     entity::{episode, movie},
@@ -37,6 +37,8 @@ impl Importer for TmdbImporter {
         if let Some(details) = details {
             let episodes = episode::Entity::find()
                 .filter(episode::Column::MovieId.eq(details.id))
+                .order_by_asc(episode::Column::SeasonNumber)
+                .order_by_asc(episode::Column::EpisodeNumber)
                 .all(&self.db)
                 .await?;
 

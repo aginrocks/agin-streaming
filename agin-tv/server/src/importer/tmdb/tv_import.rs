@@ -72,19 +72,26 @@ impl super::TmdbImporter {
         let movie = self.write_details(details.clone().into()).await?;
 
         let seasons = [new_seasons.as_slice(), known_seasons.as_slice()].concat();
-        let episodes = seasons
+        let mut episodes = seasons
             .into_iter()
-            .flat_map(|s| {
-                s.episodes
-                    .into_iter()
-                    .map(|e| {
-                        let model = e.into();
-                        episode::ActiveModel {
-                            movie_id: Set(movie.id),
-                            ..model
-                        }
-                    })
-                    .collect::<Vec<episode::ActiveModel>>()
+            .flat_map(|s| s.episodes)
+            .collect::<Vec<_>>();
+
+        episodes.sort_by(|a, b| {
+            a.inner
+                .season_number
+                .cmp(&b.inner.season_number)
+                .then(a.inner.episode_number.cmp(&b.inner.episode_number))
+        });
+
+        let episodes = episodes
+            .into_iter()
+            .map(|e| {
+                let model = e.into();
+                episode::ActiveModel {
+                    movie_id: Set(movie.id),
+                    ..model
+                }
             })
             .collect::<Vec<episode::ActiveModel>>();
 
