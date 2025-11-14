@@ -20,6 +20,10 @@ pub fn routes() -> OpenApiRouter<AppState> {
 #[derive(Deserialize, IntoParams)]
 #[into_params(parameter_in = Query)]
 pub struct Params {
+    /// Refreshes the cache by fetching data from TMDB even if it already exists in the database
+    ///
+    /// > [!WARNING]
+    /// > Adds approx. **200ms - 600ms** to the response time
     #[serde(default, deserialize_with = "crate::util::opt_bool_from_string")]
     pub refresh_cache: Option<bool>,
 }
