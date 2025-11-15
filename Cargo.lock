@@ -1888,9 +1888,9 @@ dependencies = [
 
 [[package]]
 name = "num-bigint-dig"
-version = "0.8.5"
+version = "0.8.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "82c79c15c05d4bf82b6f5ef163104cc81a760d8e874d38ac50ab67c8877b647b"
+checksum = "e661dda6640fad38e827a6d4a310ff4763082116fe217f279885c97f511bb0b7"
 dependencies = [
  "lazy_static",
  "libm",
@@ -2736,9 +2736,9 @@ dependencies = [
 
 [[package]]
 name = "rsa"
-version = "0.9.8"
+version = "0.9.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "78928ac1ed176a5ca1d17e578a1825f3d81ca54cf41053a592584b020cfd691b"
+checksum = "40a0376c50d0358279d9d643e4bf7b7be212f1f4ff1da9070a7b54d22ef75c88"
 dependencies = [
  "const-oid",
  "digest",
@@ -2968,9 +2968,9 @@ dependencies = [
 
 [[package]]
 name = "sea-query"
-version = "1.0.0-rc.17"
+version = "1.0.0-rc.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "30d190945ff6b2914ef0631c1933ef67ee142b15f00b72d40bf241147d24b522"
+checksum = "1c71f6d768c8bb1003bbfce01431374f677abbcf7582d6a0ec4ea4c5ae20adbb"
 dependencies = [
  "bigdecimal",
  "chrono",
@@ -3015,9 +3015,9 @@ dependencies = [
 
 [[package]]
 name = "sea-schema"
-version = "0.17.0-rc.12"
+version = "0.17.0-rc.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "09cb79f2d0fe3a3ca7852eb1c61590452674700fdeb9f07656b9eb16f8d1990b"
+checksum = "59f99598cda516443eb35c06fe5b4496d60c8f7afca708bd998087b63ac56775"
 dependencies = [
  "async-trait",
  "sea-query",
