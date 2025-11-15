@@ -1,6 +1,12 @@
 syntax = "proto3";
 
-package rocks.agin.tv.plugin;
+package plugin;
+
+import "google/protobuf/empty.proto";
+
+service InfoProvider {
+    rpc GetPluginInfo (google.protobuf.Empty) returns (PluginInfo);
+}
 
 // Information about a plugin
 message PluginInfo {
