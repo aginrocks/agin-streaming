@@ -1,15 +1,14 @@
 [package]
-name = "plugin_sdk"
+name = "example_plugin"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-axum = "0.8.7"
-plugin_sdk_macros = { version = "0.1.0", path = "plugin_sdk_macros" }
+plugin_sdk = { version = "0.1.0", path = "../plugin-sdk" }
 prost = "0.14.1"
+tokio = { version = "1.48.0", features = ["full"] }
 tonic = "0.14.2"
 tonic-prost = "0.14.2"
-tower-service = "0.3.3"
 
 [build-dependencies]
 tonic-prost-build = "0.14.2"
