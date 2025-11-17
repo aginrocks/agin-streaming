@@ -1,3 +1,4 @@
+pub mod api;
 pub mod sdk;
 pub mod service;
 
