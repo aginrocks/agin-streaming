@@ -2201,6 +2201,7 @@ dependencies = [
  "axum",
  "plugin_sdk_macros",
  "prost",
+ "reqwest",
  "thiserror",
  "tonic",
  "tonic-prost",

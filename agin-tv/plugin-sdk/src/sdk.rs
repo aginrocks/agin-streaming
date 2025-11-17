@@ -17,15 +17,6 @@ pub trait HasInner {
     fn inner(&self) -> &Self::Inner;
 }
 
-// impl<S> AginService for S
-// where
-//     S: tonic::server::NamedService + Clone + Send + Sync + HasInner + 'static,
-// {
-//     fn metadata(&self) -> crate::plugin::Service {
-//         todo!()
-//     }
-// }
-
 impl PluginSdk {
     pub fn builder() -> Self {
         Self {
