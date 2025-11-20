@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use crate::api::cache::CacheManager;
+use crate::cache::CacheManager;
 
 pub struct Context<T: Send + Sync + 'static> {
     /// Shared state across the entire plugin lifecycle

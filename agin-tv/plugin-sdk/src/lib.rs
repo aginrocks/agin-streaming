@@ -1,5 +1,6 @@
-pub mod api;
+pub mod cache;
 pub mod context;
+pub(crate) mod endpoints;
 pub mod sdk;
 pub mod service;
 

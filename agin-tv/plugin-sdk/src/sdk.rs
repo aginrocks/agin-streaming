@@ -8,7 +8,6 @@ use crate::service::ServiceInfo;
 
 #[derive(Default)]
 pub struct PluginSdk<S: Send + Sync + 'static> {
-    server: Server,
     services: Vec<ServiceInfo<S>>,
     state: Arc<S>,
 }
@@ -21,7 +20,6 @@ pub trait HasInner {
 impl<S: Send + Sync + 'static> PluginSdk<S> {
     pub fn builder(state: S) -> Self {
         Self {
-            server: Server::builder(),
             services: Vec::new(),
             state: Arc::new(state),
         }
@@ -36,6 +34,8 @@ impl<S: Send + Sync + 'static> PluginSdk<S> {
         self.services.extend(services);
         self
     }
+
+    pub async fn listen(self) {}
 
     // pub fn add_service<S>(mut self, service: S) -> Self
     // where
