@@ -1,20 +1,23 @@
 use plugin_sdk::{
     context::Context,
+    handler::{HandlerError, HandlerInfo, HandlerMetadata},
     plugin::{SearchRequest, SearchResponse},
-    service::{ServiceError, ServiceInfo},
 };
 
 use crate::State;
 
-pub fn info() -> ServiceInfo<State> {
+pub fn info() -> HandlerMetadata<State> {
     async fn inner(
         ctx: Context<State>,
         request: SearchRequest,
-    ) -> Result<SearchResponse, ServiceError> {
+    ) -> Result<SearchResponse, HandlerError> {
         todo!()
     }
 
-    ServiceInfo::Search {
-        callback: |ctx, request| Box::pin(async move { inner(ctx, request).await }),
+    HandlerMetadata {
+        providers: vec!["example-provider".to_string()],
+        info: HandlerInfo::Search {
+            callback: |ctx, request| Box::pin(async move { inner(ctx, request).await }),
+        },
     }
 }

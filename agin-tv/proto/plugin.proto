@@ -4,7 +4,7 @@ package plugin;
 
 import "google/protobuf/empty.proto";
 
-service InfoProvider {
+service InfoProviderService {
     rpc GetPluginInfo (google.protobuf.Empty) returns (PluginInfo);
 }
 

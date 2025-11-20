@@ -1,8 +1,8 @@
 pub mod cache;
 pub mod context;
-pub(crate) mod endpoints;
+pub mod handler;
 pub mod sdk;
-pub mod service;
+pub(crate) mod services;
 
 pub mod plugin {
     tonic::include_proto!("plugin");

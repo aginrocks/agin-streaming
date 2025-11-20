@@ -1,15 +1,16 @@
-use std::{convert::Infallible, sync::Arc};
+use std::sync::Arc;
 
-use axum::http::Request;
-use tonic::{body::Body, server::NamedService, transport::Server};
-use tower_service::Service;
-
-use crate::service::ServiceInfo;
+use crate::{
+    handler::{HandlerInfo, HandlerMetadata},
+    plugin::Service,
+    services,
+};
 
 #[derive(Default)]
-pub struct PluginSdk<S: Send + Sync + 'static> {
-    services: Vec<ServiceInfo<S>>,
-    state: Arc<S>,
+pub struct PluginSdk<S: Send + Sync + Clone + 'static> {
+    pub manifests: Vec<Service>,
+    services: Vec<HandlerMetadata<S>>,
+    state: S,
 }
 
 pub trait HasInner {
@@ -17,25 +18,29 @@ pub trait HasInner {
     fn inner(&self) -> &Self::Inner;
 }
 
-impl<S: Send + Sync + 'static> PluginSdk<S> {
+impl<S: Send + Sync + Clone + 'static> PluginSdk<S> {
     pub fn builder(state: S) -> Self {
         Self {
+            manifests: Vec::new(),
             services: Vec::new(),
-            state: Arc::new(state),
+            state,
         }
     }
 
-    pub fn add_service(mut self, service: ServiceInfo<S>) -> Self {
-        self.services.push(service);
-        self
-    }
-
-    pub fn add_services(mut self, services: Vec<ServiceInfo<S>>) -> Self {
+    pub fn add_services(mut self, services: Vec<HandlerMetadata<S>>) -> Self {
+        let manifests = services
+            .iter()
+            .cloned()
+            .map(Service::from)
+            .collect::<Vec<Service>>();
+        self.manifests.extend(manifests);
         self.services.extend(services);
         self
     }
 
-    pub async fn listen(self) {}
+    pub async fn listen(self) -> Result<(), tonic::transport::Error> {
+        services::serve(self, "[::1]:50051".parse().unwrap()).await
+    }
 
     // pub fn add_service<S>(mut self, service: S) -> Self
     // where

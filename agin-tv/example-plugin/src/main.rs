@@ -4,6 +4,7 @@ use plugin_sdk::sdk::PluginSdk;
 
 use crate::info::info;
 
+#[derive(Clone)]
 pub struct State {
     pub a: String,
 }
@@ -17,7 +18,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let state = State { a: "a".into() };
 
-    let sdk = PluginSdk::builder(state).add_service(info());
+    let sdk = PluginSdk::builder(state).add_services(vec![info()]);
+
+    sdk.listen().await?;
 
     // let sdk = PluginSdk::builder().add_service(InfoProviderServer::new(greeter));
 
