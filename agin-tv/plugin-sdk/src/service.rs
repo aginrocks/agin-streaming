@@ -1,6 +1,10 @@
 use thiserror::Error;
 
-use crate::plugin::{SearchRequest, SearchResponse, Service};
+use crate::{
+    BoxFuture,
+    context::Context,
+    plugin::{SearchRequest, SearchResponse, Service},
+};
 
 #[derive(Debug, Error)]
 pub enum ServiceError {
@@ -8,10 +12,17 @@ pub enum ServiceError {
     ReqwestError(#[from] reqwest::Error),
 }
 
-pub trait AginService {
-    fn metadata(&self) -> Service;
+pub struct ServiceMetadata<T: Send + Sync + 'static> {
+    pub providers: Vec<&'static str>,
+
+    pub info: ServiceInfo<T>,
 }
 
-pub trait SearchService {
-    // fn search(request: SearchRequest) -> Result<SearchResponse>;
+pub enum ServiceInfo<T: Send + Sync + 'static> {
+    Search {
+        callback: fn(
+            Context<T>,
+            SearchRequest,
+        ) -> BoxFuture<'static, Result<SearchResponse, ServiceError>>,
+    },
 }

@@ -1,32 +1,20 @@
-use plugin_sdk::service::AginService;
-use tonic::{Request, Response, Status};
-
-use crate::plugin::{
-    PluginInfo,
-    info_provider_server::{InfoProvider, InfoProviderServer},
+use plugin_sdk::{
+    context::Context,
+    plugin::{SearchRequest, SearchResponse},
+    service::{ServiceError, ServiceInfo},
 };
 
-#[derive(Debug, Default)]
-pub struct Info {}
+use crate::State;
 
-impl AginService for InfoProviderServer<Info> {
-    fn metadata(&self) -> plugin_sdk::plugin::Service {
+pub fn info() -> ServiceInfo<State> {
+    async fn inner(
+        ctx: Context<State>,
+        request: SearchRequest,
+    ) -> Result<SearchResponse, ServiceError> {
         todo!()
     }
-}
 
-#[tonic::async_trait]
-impl InfoProvider for Info {
-    async fn get_plugin_info(&self, request: Request<()>) -> Result<Response<PluginInfo>, Status> {
-        println!("Got a request");
-
-        let reply = PluginInfo {
-            id: "1".into(),
-            display_name: "a".into(),
-            version: env!("CARGO_PKG_VERSION").into(),
-            services: vec![],
-        };
-
-        Ok(Response::new(reply)) // Send back our formatted greeting
+    ServiceInfo::Search {
+        callback: |ctx, request| Box::pin(async move { inner(ctx, request).await }),
     }
 }

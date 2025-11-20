@@ -1,23 +1,25 @@
 mod info;
 
 use plugin_sdk::sdk::PluginSdk;
-use tonic::transport::Server;
 
-use crate::{
-    info::Info,
-    plugin::{PluginInfo, info_provider_server::InfoProviderServer},
-};
+use crate::info::info;
 
-pub mod plugin {
-    tonic::include_proto!("plugin");
+pub struct State {
+    pub a: String,
 }
 
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // let addr = "[::1]:50051".parse()?;
-    let greeter = Info::default();
+    // let greeter = Info::default();
+    //
+    //
 
-    let sdk = PluginSdk::builder().add_service(InfoProviderServer::new(greeter));
+    let state = State { a: "a".into() };
+
+    let sdk = PluginSdk::builder(state).add_service(info());
+
+    // let sdk = PluginSdk::builder().add_service(InfoProviderServer::new(greeter));
 
     // Server::builder()
     //     .add_service(InfoProviderServer::new(greeter))
