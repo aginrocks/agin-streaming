@@ -32,10 +32,11 @@ impl<T: Send + Sync + Clone + 'static> From<HandlerMetadata<T>> for Service {
 
 #[derive(Clone)]
 pub enum HandlerInfo<T: Send + Sync + Clone + 'static> {
-    Search {
-        callback: fn(
-            Context<T>,
-            SearchRequest,
-        ) -> BoxFuture<'static, Result<SearchResponse, HandlerError>>,
-    },
+    Search(SearchHandler<T>),
+}
+
+#[derive(Clone)]
+pub struct SearchHandler<T: Send + Sync + Clone + 'static> {
+    pub callback:
+        fn(Context<T>, SearchRequest) -> BoxFuture<'static, Result<SearchResponse, HandlerError>>,
 }

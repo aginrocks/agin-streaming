@@ -1,16 +1,17 @@
 use std::sync::Arc;
 
 use crate::{
+    cache::CacheManager,
+    context::Context,
     handler::{HandlerInfo, HandlerMetadata},
     plugin::Service,
     services,
 };
 
-#[derive(Default)]
 pub struct PluginSdk<S: Send + Sync + Clone + 'static> {
     pub manifests: Vec<Service>,
-    services: Vec<HandlerMetadata<S>>,
-    state: S,
+    pub(crate) services: Vec<HandlerMetadata<S>>,
+    pub context: Context<S>,
 }
 
 pub trait HasInner {
@@ -20,10 +21,15 @@ pub trait HasInner {
 
 impl<S: Send + Sync + Clone + 'static> PluginSdk<S> {
     pub fn builder(state: S) -> Self {
+        let context = Context {
+            state: Arc::new(state.clone()),
+            cache: Arc::new(CacheManager::new()),
+        };
+
         Self {
             manifests: Vec::new(),
             services: Vec::new(),
-            state,
+            context,
         }
     }
 

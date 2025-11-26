@@ -1,6 +1,6 @@
 use plugin_sdk::{
     context::Context,
-    handler::{HandlerError, HandlerInfo, HandlerMetadata},
+    handler::{HandlerError, HandlerInfo, HandlerMetadata, SearchHandler},
     plugin::{SearchRequest, SearchResponse},
 };
 
@@ -16,8 +16,8 @@ pub fn info() -> HandlerMetadata<State> {
 
     HandlerMetadata {
         providers: vec!["example-provider".to_string()],
-        info: HandlerInfo::Search {
+        info: HandlerInfo::Search(SearchHandler {
             callback: |ctx, request| Box::pin(async move { inner(ctx, request).await }),
-        },
+        }),
     }
 }

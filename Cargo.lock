@@ -2199,10 +2199,12 @@ name = "plugin_sdk"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "futures",
  "plugin_sdk_macros",
  "prost",
  "reqwest",
  "thiserror",
+ "tokio",
  "tonic",
  "tonic-prost",
  "tonic-prost-build",
