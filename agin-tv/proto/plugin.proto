@@ -84,6 +84,7 @@ message GetSourcesResponse {
     repeated Source sources = 1;
 }
 
+// A single source of media content (not yet resolved)
 message Source {
     // The provider that produced this source
     string provider_id = 1;
@@ -106,6 +107,64 @@ message ResolveRequest {
 }
 
 message ResolveResponse {
+    repeated ResolvedSource sources = 1;
+}
+
+message ResolvedSource {
+    repeated SubtitlesTrack subtitles = 1;
+    repeated Thumbnail thumbnails = 2;
+    repeated VideoSource video = 3;
+    repeated Segments sengments = 4;
+}
+
+message SubtitlesTrack {
+    string language = 1;
+    string url = 2;
+    optional SourceConfiguration configuration = 5;
+}
+
+message VideoSource {
+    VideoSourceType type = 1;
+    LinkDesignation designation = 2;
     // Final playback URL
+    string url = 3;
+    optional int32 width = 4;
+    optional SourceConfiguration configuration = 5;
+}
+
+enum VideoSourceType {
+    HLS = 0;
+    DASH = 1;
+    MP4 = 2;
+}
+
+enum LinkDesignation {
+    STREAMING = 0;
+    // Download links usually don't throttle bandwidth
+    DOWNLOAD = 1;
+    BOTH = 2;
+}
+
+message Thumbnail {
     string url = 1;
+    float start = 2;
+    float end = 3;
+    optional SourceConfiguration configuration = 5;
+}
+
+message Segments {
+    SegmentType type = 1;
+    float start = 2;
+    float end = 3;
+}
+
+enum SegmentType {
+    INTRO = 0;
+    CREDITS = 1;
+    OTHER = 2;
+}
+
+// Configuration for accessing a source (e.g. custom headers)
+message SourceConfiguration {
+    map<string, string> headers = 1;
 }
