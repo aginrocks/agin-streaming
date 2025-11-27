@@ -4,7 +4,8 @@ use crate::{
     BoxFuture,
     context::Context,
     plugin::{
-        GetSourcesRequest, GetSourcesResponse, SearchRequest, SearchResponse, Service, ServiceType,
+        GetSourcesRequest, GetSourcesResponse, ResolveRequest, ResolveResponse, SearchRequest,
+        SearchResponse, Service, ServiceType,
     },
 };
 
@@ -27,6 +28,7 @@ impl<T: Send + Sync + Clone + 'static> From<HandlerMetadata<T>> for Service {
             r#type: match value.info {
                 HandlerInfo::Search { .. } => ServiceType::Search.into(),
                 HandlerInfo::SourceProvider { .. } => ServiceType::SourceProvider.into(),
+                HandlerInfo::LinkResolver { .. } => ServiceType::LinkResolver.into(),
             },
             providers: value.providers,
         }
@@ -37,6 +39,7 @@ impl<T: Send + Sync + Clone + 'static> From<HandlerMetadata<T>> for Service {
 pub enum HandlerInfo<T: Send + Sync + Clone + 'static> {
     Search(SearchHandler<T>),
     SourceProvider(SourceProviderHandler<T>),
+    LinkResolver(LinkResolverHandler<T>),
 }
 
 #[derive(Clone)]
@@ -51,4 +54,10 @@ pub struct SourceProviderHandler<T: Send + Sync + Clone + 'static> {
         Context<T>,
         GetSourcesRequest,
     ) -> BoxFuture<'static, Result<GetSourcesResponse, HandlerError>>,
+}
+
+#[derive(Clone)]
+pub struct LinkResolverHandler<T: Send + Sync + Clone + 'static> {
+    pub callback:
+        fn(Context<T>, ResolveRequest) -> BoxFuture<'static, Result<ResolveResponse, HandlerError>>,
 }
