@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package cache;
+
+import "google/protobuf/empty.proto";
+
+service CacheService {
+    rpc Get (GetRequest) returns (GetResponse);
+
+    rpc Set (SetRequest) returns (google.protobuf.Empty);
+}
+
+message GetRequest {
+    string key = 1;
+}
+
+message GetResponse {
+    string value = 1;
+}
+
+message SetRequest {
+    string key = 1;
+    string value = 2;
+    int32 ttl = 3;
+}

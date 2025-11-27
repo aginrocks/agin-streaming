@@ -1,12 +1,7 @@
+use plugin_proto::Service;
 use std::sync::Arc;
 
-use crate::{
-    cache::CacheManager,
-    context::Context,
-    handler::{HandlerInfo, HandlerMetadata},
-    plugin::Service,
-    services,
-};
+use crate::{cache::CacheManager, context::Context, handler::HandlerMetadata, services};
 
 pub struct PluginSdk<S: Send + Sync + Clone + 'static> {
     pub manifests: Vec<Service>,

@@ -1,16 +1,12 @@
 use std::sync::Arc;
 
 use futures::future::join_all;
+use plugin_proto::{
+    GetSourcesRequest, GetSourcesResponse, source_provider_service_server::SourceProviderService,
+};
 use tonic::{Request, Response, Status};
 
-use crate::{
-    handler::HandlerInfo,
-    plugin::{
-        GetSourcesRequest, GetSourcesResponse,
-        source_provider_service_server::SourceProviderService,
-    },
-    sdk::PluginSdk,
-};
+use crate::{handler::HandlerInfo, sdk::PluginSdk};
 
 #[derive(Clone)]
 pub struct SourceProvider<T: Send + Sync + Clone + 'static> {

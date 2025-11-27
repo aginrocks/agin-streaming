@@ -1,11 +1,9 @@
 use std::sync::Arc;
 
+use plugin_proto::{PluginInfo, info_provider_service_server::InfoProviderService};
 use tonic::{Request, Response, Status};
 
-use crate::{
-    plugin::{PluginInfo, info_provider_service_server::InfoProviderService},
-    sdk::PluginSdk,
-};
+use crate::sdk::PluginSdk;
 
 #[derive(Clone)]
 pub struct InfoProvider<T: Send + Sync + Clone + 'static> {

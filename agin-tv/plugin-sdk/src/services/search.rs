@@ -1,13 +1,10 @@
 use std::sync::Arc;
 
 use futures::future::join_all;
+use plugin_proto::{SearchRequest, SearchResponse, search_service_server::SearchService};
 use tonic::{Request, Response, Status};
 
-use crate::{
-    handler::HandlerInfo,
-    plugin::{SearchRequest, SearchResponse, search_service_server::SearchService},
-    sdk::PluginSdk,
-};
+use crate::{handler::HandlerInfo, sdk::PluginSdk};
 
 #[derive(Clone)]
 pub struct Search<T: Send + Sync + Clone + 'static> {

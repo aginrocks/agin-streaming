@@ -1,13 +1,12 @@
 use std::sync::Arc;
 
 use futures::future::join_all;
+use plugin_proto::{
+    ResolveRequest, ResolveResponse, link_resolver_service_server::LinkResolverService,
+};
 use tonic::{Request, Response, Status};
 
-use crate::{
-    handler::HandlerInfo,
-    plugin::{ResolveRequest, ResolveResponse, link_resolver_service_server::LinkResolverService},
-    sdk::PluginSdk,
-};
+use crate::{handler::HandlerInfo, sdk::PluginSdk};
 
 #[derive(Clone)]
 pub struct LinkResolver<T: Send + Sync + Clone + 'static> {

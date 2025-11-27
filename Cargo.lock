@@ -2195,11 +2195,22 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7edddbd0b52d732b21ad9a5fab5c704c14cd949e5e9a1ec5929a24fded1b904c"
 
 [[package]]
+name = "plugin_proto"
+version = "0.1.0"
+dependencies = [
+ "prost",
+ "tonic",
+ "tonic-prost",
+ "tonic-prost-build",
+]
+
+[[package]]
 name = "plugin_sdk"
 version = "0.1.0"
 dependencies = [
  "axum",
  "futures",
+ "plugin_proto",
  "plugin_sdk_macros",
  "prost",
  "reqwest",

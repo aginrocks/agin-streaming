@@ -6,6 +6,7 @@ edition = "2024"
 [dependencies]
 axum = "0.8.7"
 futures = "0.3.31"
+plugin_proto = { version = "0.1.0", path = "../proto/plugin" }
 plugin_sdk_macros = { version = "0.1.0", path = "../plugin-sdk-macros" }
 prost = "0.14.1"
 reqwest = { version = "0.12.24", default-features = false }

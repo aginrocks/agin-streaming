@@ -5,15 +5,15 @@ mod source_provider;
 
 use std::{net::SocketAddr, sync::Arc};
 
+use plugin_proto::{
+    info_provider_service_server::InfoProviderServiceServer,
+    link_resolver_service_server::LinkResolverServiceServer,
+    search_service_server::SearchServiceServer,
+    source_provider_service_server::SourceProviderServiceServer,
+};
 use tonic::transport::Server;
 
 use crate::{
-    plugin::{
-        info_provider_service_server::InfoProviderServiceServer,
-        link_resolver_service_server::LinkResolverServiceServer,
-        search_service_server::SearchServiceServer,
-        source_provider_service_server::SourceProviderServiceServer,
-    },
     sdk::PluginSdk,
     services::{
         info::InfoProvider, link_resolver::LinkResolver, search::Search,

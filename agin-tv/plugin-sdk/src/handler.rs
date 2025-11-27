@@ -1,13 +1,10 @@
+use plugin_proto::{
+    GetSourcesRequest, GetSourcesResponse, ResolveRequest, ResolveResponse, SearchRequest,
+    SearchResponse, Service, ServiceType,
+};
 use thiserror::Error;
 
-use crate::{
-    BoxFuture,
-    context::Context,
-    plugin::{
-        GetSourcesRequest, GetSourcesResponse, ResolveRequest, ResolveResponse, SearchRequest,
-        SearchResponse, Service, ServiceType,
-    },
-};
+use crate::{BoxFuture, context::Context};
 
 #[derive(Debug, Error)]
 pub enum HandlerError {
