@@ -5,8 +5,10 @@ edition = "2024"
 
 [dependencies]
 anyhow = "1.0.100"
+color-eyre = "0.6.5"
 dashmap = "6.1.0"
-ginepro = "0.9.0"
+ginepro = { git = "https://github.com/dmarteau/ginepro.git", branch = "tonic-0.14-support" }
 plugin_proto = { version = "0.1.0", path = "../proto/plugin" }
 tokio = { version = "1.48.0", features = ["sync"] }
 tonic = { version = "0.14.2", features = ["tls-aws-lc"] }
+tracing = "0.1.43"

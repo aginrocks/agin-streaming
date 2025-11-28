@@ -1,18 +1,17 @@
+use std::sync::Arc;
+
 use ginepro::LoadBalancedChannel;
 use plugin_proto::PluginInfo;
+use tokio::sync::RwLock;
 
+use crate::clients::Clients;
+
+#[derive(Clone)]
 pub struct Plugin {
     pub hostname: String,
     pub port: u16,
-    pub status: PluginStatus,
-    pub channel: LoadBalancedChannel,
-}
-
-pub enum PluginStatus {
-    // Plugin has not responded to `GetInfo` yet
-    Pending,
-    // Plugin has responded, but could be unhealthy
-    Discovered(PluginInfo),
+    pub info: PluginInfo,
+    pub clients: Arc<RwLock<Clients>>,
 }
 
 impl Plugin {
@@ -21,12 +20,19 @@ impl Plugin {
             .channel()
             .await?;
 
+        let mut clients = Clients::from_channel(channel.clone());
+
+        let info_request = tonic::Request::new(());
+        let info = clients.info.get_plugin_info(info_request).await?;
+
         let plugin = Self {
             hostname,
             port,
-            status: PluginStatus::Pending,
-            channel,
+            clients: Arc::new(RwLock::new(clients)),
+            info: info.into_inner(),
         };
         Ok(plugin)
     }
+
+    pub async fn get_info(&self) {}
 }
