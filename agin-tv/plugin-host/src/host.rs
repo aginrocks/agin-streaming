@@ -1,3 +1,5 @@
+pub mod search;
+
 use color_eyre::Result;
 use dashmap::{DashMap, DashSet};
 use plugin_proto::ServiceType;
