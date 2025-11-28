@@ -2333,6 +2333,7 @@ dependencies = [
  "anyhow",
  "color-eyre",
  "dashmap",
+ "futures",
  "ginepro",
  "plugin_proto",
  "tokio",

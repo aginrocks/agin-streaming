@@ -7,6 +7,7 @@ edition = "2024"
 anyhow = "1.0.100"
 color-eyre = "0.6.5"
 dashmap = "6.1.0"
+futures = "0.3.31"
 ginepro = { git = "https://github.com/dmarteau/ginepro.git", branch = "tonic-0.14-support" }
 plugin_proto = { version = "0.1.0", path = "../proto/plugin" }
 tokio = { version = "1.48.0", features = ["sync"] }
