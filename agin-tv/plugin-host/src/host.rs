@@ -17,9 +17,24 @@ impl PluginHost {
     }
 
     pub async fn register_plugin(&self, plugin: Plugin) {
-        self.plugins
+        let old = self
+            .plugins
             .insert((plugin.hostname.clone(), plugin.port), plugin.clone());
 
+        // Cleanup old providers
+        if let Some(old) = old {
+            for service in old.info.services {
+                for provider in service.providers {
+                    if let Err(e) =
+                        self.clean_service(service.r#type, provider, old.hostname.clone(), old.port)
+                    {
+                        warn!("Failed to clean old provider: {}", e);
+                    }
+                }
+            }
+        }
+
+        // Register new providers
         for service in plugin.info.services {
             for provider in service.providers {
                 if let Err(e) = self.set_provider(
@@ -45,6 +60,23 @@ impl PluginHost {
             .entry((service_type.try_into()?, provider))
             .or_default()
             .insert((hostname, port));
+
+        Ok(())
+    }
+
+    fn clean_service(
+        &self,
+        service_type: i32,
+        provider: String,
+        hostname: String,
+        port: u16,
+    ) -> Result<()> {
+        if let Some(set) = self
+            .providers
+            .get_mut(&(service_type.try_into()?, provider))
+        {
+            set.remove(&(hostname, port));
+        }
 
         Ok(())
     }
