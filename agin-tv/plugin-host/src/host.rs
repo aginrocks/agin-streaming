@@ -18,6 +18,10 @@ impl PluginHost {
         Default::default()
     }
 
+    pub fn has_plugin(&self, hostname: &str, port: u16) -> bool {
+        self.plugins.contains_key(&(hostname.to_string(), port))
+    }
+
     pub async fn register_plugin(&self, plugin: Plugin) {
         let old = self
             .plugins

@@ -1,18 +1,23 @@
-use std::net::SocketAddr;
+use std::{net::SocketAddr, sync::Arc};
 
 use axum::{Extension, Json, Router, response::IntoResponse, routing::get};
 use color_eyre::Result;
 use http::StatusCode;
+use plugin_host::PluginHost;
 use sea_orm::Database;
 use tokio::net::TcpListener;
-use tracing::{instrument, level_filters::LevelFilter};
+use tracing::{error, instrument, level_filters::LevelFilter};
 use tracing_error::ErrorLayer;
 use tracing_subscriber::{fmt::format::FmtSpan, layer::SubscriberExt, util::SubscriberInitExt};
 use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_scalar::{Scalar, Servable as _};
 
-use crate::{settings::Settings, state::AppState};
+use crate::{
+    plugins::{PluginOptions, PluginsConfig},
+    settings::Settings,
+    state::AppState,
+};
 
 pub fn init_tracing(filter: LevelFilter) -> Result<()> {
     tracing_subscriber::Registry::default()
@@ -77,4 +82,17 @@ pub async fn init_database(settings: &Settings) -> Result<sea_orm::DatabaseConne
 
 pub fn init_tmdb(settings: &Settings) -> tmdb_api::client::ReqwestClient {
     tmdb_api::client::Client::new(settings.tmdb.access_token.clone())
+}
+
+pub fn init_plugins(settings: &Settings) -> Arc<PluginsConfig> {
+    let plugins = Arc::new(PluginsConfig::new(settings.plugins.config_path.clone()));
+
+    let watcher = plugins.clone();
+    tokio::spawn(async move {
+        if let Err(e) = watcher.watch().await {
+            error!("Plugin config watcher exited with error: {e}");
+        }
+    });
+
+    plugins
 }

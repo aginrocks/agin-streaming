@@ -2,12 +2,13 @@ mod entity;
 mod errors;
 mod importer;
 mod init;
+mod plugins;
 mod routes;
 mod settings;
 mod state;
 mod util;
 
-use std::sync::Arc;
+use std::{path::PathBuf, sync::Arc};
 
 use color_eyre::{Result, eyre::Context};
 use rustls::crypto::{CryptoProvider, aws_lc_rs};
@@ -15,7 +16,8 @@ use tracing::{info, level_filters::LevelFilter};
 use utoipa::OpenApi;
 
 use crate::{
-    init::{init_axum, init_database, init_listener, init_tmdb, init_tracing},
+    init::{init_axum, init_database, init_listener, init_plugins, init_tmdb, init_tracing},
+    plugins::PluginsConfig,
     settings::Settings,
     state::AppState,
 };
@@ -47,10 +49,13 @@ async fn main() -> Result<()> {
 
     let tmdb = Arc::new(init_tmdb(&settings));
 
+    let plugins = init_plugins(&settings);
+
     let app_state = AppState {
         settings: settings.clone(),
         db,
         tmdb,
+        plugins,
     };
 
     let app = init_axum(app_state).await?;

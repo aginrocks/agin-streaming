@@ -1,4 +1,7 @@
-use std::net::{Ipv4Addr, Ipv6Addr, SocketAddr};
+use std::{
+    net::{Ipv4Addr, Ipv6Addr, SocketAddr},
+    path::PathBuf,
+};
 
 use color_eyre::{Section as _, eyre::Context as _};
 use config::{Config, ConfigError, Environment, File};
@@ -56,6 +59,11 @@ pub struct Redis {
     pub connection_string: String,
 }
 
+#[derive(Debug, Deserialize, Serialize)]
+pub struct Plugins {
+    pub config_path: PathBuf,
+}
+
 #[derive(Debug, Deserialize, Serialize, Clone, ToSchema)]
 pub struct Oidc {
     #[serde(with = "http_serde_ext::uri")]
@@ -87,6 +95,7 @@ pub struct Settings {
     pub general: General,
     pub db: Db,
     pub redis: Redis,
+    pub plugins: Plugins,
     pub oidc: Oidc,
     pub tmdb: Tmdb,
     pub kubernetes: Kubernetes,
@@ -162,6 +171,9 @@ impl Settings {
             },
             redis: Redis {
                 connection_string: "redis://localhost:6379".to_string(),
+            },
+            plugins: Plugins {
+                config_path: PathBuf::from("plugins.toml"),
             },
             oidc: Oidc {
                 issuer: "https://example.com"
