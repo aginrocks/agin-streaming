@@ -1,5 +1,5 @@
 use plugin_proto::Service;
-use std::sync::Arc;
+use std::{net::SocketAddr, sync::Arc};
 
 use crate::{cache::CacheManager, context::Context, handler::HandlerMetadata, services};
 
@@ -39,39 +39,7 @@ impl<S: Send + Sync + Clone + 'static> PluginSdk<S> {
         self
     }
 
-    pub async fn listen(self) -> Result<(), tonic::transport::Error> {
-        services::serve(self, "[::1]:50051".parse().unwrap()).await
+    pub async fn listen(self, address: SocketAddr) -> Result<(), tonic::transport::Error> {
+        services::serve(self, address).await
     }
-
-    // pub fn add_service<S>(mut self, service: S) -> Self
-    // where
-    //     S: Service<Request<Body>, Error = Infallible>
-    //         + NamedService
-    //         + Clone
-    //         + Send
-    //         + Sync
-    //         + AginService
-    //         + 'static,
-    //     S::Response: axum::response::IntoResponse,
-    //     S::Future: Send + 'static,
-    // {
-    //     let service_details = service.metadata();
-    //     self.services.push(service_details);
-    //     self.server.add_service(service);
-
-    //     self
-    // }
-
-    // pub fn start(self, addr: std::net::SocketAddr) -> Result<(), Box<dyn std::error::Error>> {
-    //     let mut server = self.server;
-
-    //     for service in self.services {
-    //         let svc = service.metadata();
-    //         server = server.add_service(svc);
-    //     }
-
-    //     server.serve(addr).await?;
-
-    //     Ok(())
-    // }
 }

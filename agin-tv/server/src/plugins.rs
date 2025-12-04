@@ -151,7 +151,7 @@ impl PluginsConfig {
 
         let plugin = Plugin::new_connect(options.host, options.port)
             .await
-            .map_err(|_| eyre!("Failed to connect to the plugin"))?;
+            .map_err(|e| eyre!("Failed to connect to the plugin: {e}"))?;
 
         self.host.register_plugin(plugin).await;
 

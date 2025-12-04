@@ -20,7 +20,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let sdk = PluginSdk::builder(state).add_services(vec![info()]);
 
-    sdk.listen().await?;
+    sdk.listen("0.0.0.0:50051".parse().unwrap()).await?;
 
     // let sdk = PluginSdk::builder().add_service(InfoProviderServer::new(greeter));
 
