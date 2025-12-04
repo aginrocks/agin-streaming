@@ -3515,6 +3515,7 @@ dependencies = [
  "thiserror",
  "tmdb-api",
  "tokio",
+ "tokio-util",
  "toml 0.8.23",
  "tonic",
  "tower",

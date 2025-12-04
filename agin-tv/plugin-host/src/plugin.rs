@@ -20,7 +20,7 @@ impl Plugin {
             .channel()
             .await?;
 
-        let mut clients = Clients::from_channel(channel.clone());
+        let mut clients = Clients::from_channel(channel);
 
         let info_request = tonic::Request::new(());
         let info = clients.info.get_plugin_info(info_request).await?;
