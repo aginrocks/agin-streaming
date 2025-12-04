@@ -17,7 +17,7 @@ pub fn handler(args: TokenStream, function: TokenStream) -> TokenStream {
         Err(e) => return e.into_compile_error().into(),
     };
 
-    let args = match <handler::args::HandlerArgs as darling::FromMeta>::from_list(&args) {
+    let args = match <handler::args::RawHandlerArgs as darling::FromMeta>::from_list(&args) {
         Ok(x) => x,
         Err(e) => return e.write_errors().into(),
     };

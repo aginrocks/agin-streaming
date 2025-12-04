@@ -1,3 +1,4 @@
+use plugin_sdk::handler;
 use plugin_sdk::{
     context::Context,
     handler::{HandlerError, HandlerInfo, HandlerMetadata, SearchHandler},
@@ -20,4 +21,12 @@ pub fn info() -> HandlerMetadata<State> {
             callback: |ctx, request| Box::pin(async move { inner(ctx, request).await }),
         }),
     }
+}
+
+#[handler(search, supports("example-provider"))]
+pub async fn test(
+    ctx: Context<State>,
+    request: SearchRequest,
+) -> Result<SearchResponse, HandlerError> {
+    todo!()
 }

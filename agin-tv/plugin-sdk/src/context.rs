@@ -16,6 +16,6 @@ pub struct Context<T: Send + Sync + 'static> {
 pub trait _GetGenerics {
     type T;
 }
-impl<U, E> _GetGenerics for Context<T> {
+impl<T: Send + Sync + 'static> _GetGenerics for Context<T> {
     type T = T;
 }

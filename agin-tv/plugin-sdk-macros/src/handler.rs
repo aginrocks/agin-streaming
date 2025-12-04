@@ -1,12 +1,17 @@
 use proc_macro::TokenStream;
+use quote::{ToTokens, quote};
 use syn::spanned::Spanned;
 
-use crate::handler::args::HandlerArgs;
+use crate::handler::{
+    args::{HandlerArgs, RawHandlerArgs},
+    info::generate_info,
+};
 
 pub mod args;
+pub mod info;
 
 pub fn handler(
-    args: HandlerArgs,
+    args: RawHandlerArgs,
     mut function: syn::ItemFn,
 ) -> Result<TokenStream, darling::Error> {
     if function.sig.asyncness.is_none() {
@@ -22,12 +27,24 @@ pub fn handler(
     }
 
     // Verify that handler registers providers
-    if args.providers.is_empty() {
+    if args.supports.is_empty() {
         let err_msg = "you must specify at least one provider";
         return Err(syn::Error::new(proc_macro2::Span::call_site(), err_msg).into());
     }
 
-    todo!()
+    let handler_args = match HandlerArgs::try_from(args) {
+        Ok(handler_args) => handler_args,
+        Err(e) => {
+            return Err(syn::Error::new(proc_macro2::Span::call_site(), e).into());
+        }
+    };
+
+    let inv = Invocation {
+        function,
+        args: handler_args,
+    };
+
+    Ok(TokenStream::from(generate_handler(inv)?))
 }
 
 pub struct Invocation {
@@ -35,7 +52,8 @@ pub struct Invocation {
     args: HandlerArgs,
 }
 
-fn generate_command(mut inv: Invocation) -> Result<proc_macro2::TokenStream, darling::Error> {
+// TODO: Better error handling
+fn generate_handler(mut inv: Invocation) -> Result<proc_macro2::TokenStream, darling::Error> {
     let ctx_type = match inv.function.sig.inputs.first() {
         Some(syn::FnArg::Typed(syn::PatType { ty, .. })) => &**ty,
         _ => {
@@ -48,29 +66,27 @@ fn generate_command(mut inv: Invocation) -> Result<proc_macro2::TokenStream, dar
     let ctx_type_with_static =
         syn::fold::fold_type(&mut crate::util::AllLifetimesToStatic, ctx_type.clone());
 
-    let function_name = inv
-        .function
-        .sig
-        .ident
-        .to_string()
-        .trim_start_matches("r#")
-        .to_string();
-
     let function_ident =
         std::mem::replace(&mut inv.function.sig.ident, syn::parse_quote! { inner });
     let function_generics = &inv.function.sig.generics;
     let function_visibility = &inv.function.vis;
     let function = &inv.function;
 
-    Ok(quote::quote! {
+    let providers = inv.args.supports.iter().map(|lit| {
+        quote! { #lit.to_string() }
+    });
+    let info = generate_info(&inv);
+
+    Ok(quote! {
         #[allow(clippy::str_to_string)]
         #function_visibility fn #function_ident #function_generics() -> ::plugin_sdk::handler::HandlerMetadata<
-            <#ctx_type_with_static as plugin_sdk::_GetGenerics>::T,
+            <#ctx_type_with_static as plugin_sdk::_GetGenerics>::T
         > {
             #function
 
             ::plugin_sdk::handler::HandlerMetadata {
-                providers: vec![],
+                providers: vec![#(#providers),*],
+                info: #info,
             }
         }
     })
