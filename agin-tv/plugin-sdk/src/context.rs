@@ -10,3 +10,12 @@ pub struct Context<T: Send + Sync + 'static> {
     /// Cache manager for the plugin
     pub cache: Arc<CacheManager>,
 }
+
+// needed for proc macro
+#[doc(hidden)]
+pub trait _GetGenerics {
+    type T;
+}
+impl<U, E> _GetGenerics for Context<T> {
+    type T = T;
+}
