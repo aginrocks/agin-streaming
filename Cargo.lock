@@ -943,11 +943,7 @@ name = "example_plugin"
 version = "0.1.0"
 dependencies = [
  "plugin_sdk",
- "prost",
  "tokio",
- "tonic",
- "tonic-prost",
- "tonic-prost-build",
 ]
 
 [[package]]
