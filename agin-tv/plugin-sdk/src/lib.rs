@@ -6,6 +6,8 @@ pub mod sdk;
 pub(crate) mod services;
 
 pub use context::_GetGenerics;
-pub use plugin_sdk_macros::*;
+pub mod macros {
+    pub use plugin_sdk_macros::*;
+}
 
 pub type BoxFuture<'a, T> = std::pin::Pin<Box<dyn std::future::Future<Output = T> + Send + 'a>>;

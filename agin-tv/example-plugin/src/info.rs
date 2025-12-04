@@ -1,7 +1,7 @@
-use plugin_sdk::handler;
 use plugin_sdk::{
     context::Context,
     handler::HandlerError,
+    macros::handler,
     plugin::{SearchRequest, SearchResponse},
 };
 
