@@ -2432,6 +2432,7 @@ name = "plugin_sdk"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "color-eyre",
  "futures",
  "plugin_proto",
  "plugin_sdk_macros",

@@ -1,3 +1,4 @@
+use color_eyre::Report;
 use plugin_proto::{
     GetSourcesRequest, GetSourcesResponse, ResolveRequest, ResolveResponse, SearchRequest,
     SearchResponse, Service, ServiceType,
@@ -10,6 +11,9 @@ use crate::{BoxFuture, context::Context};
 pub enum HandlerError {
     #[error("Reqwest error: {0}")]
     ReqwestError(#[from] reqwest::Error),
+
+    #[error(transparent)]
+    Other(#[from] Report),
 }
 
 #[derive(Clone)]
