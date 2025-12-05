@@ -4,7 +4,6 @@ pub mod handler;
 pub mod plugin;
 pub mod sdk;
 pub(crate) mod services;
-pub mod tester;
 
 pub use context::_GetGenerics;
 pub mod macros {
