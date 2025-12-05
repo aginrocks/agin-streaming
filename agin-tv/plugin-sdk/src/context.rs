@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use crate::cache::CacheManager;
+use crate::cache::CacheProvider;
 
 #[derive(Clone)]
 pub struct Context<T: Send + Sync + 'static> {
@@ -8,7 +8,7 @@ pub struct Context<T: Send + Sync + 'static> {
     pub state: Arc<T>,
 
     /// Cache manager for the plugin
-    pub cache: Arc<CacheManager>,
+    pub cache: Arc<dyn CacheProvider>,
 }
 
 // needed for proc macro

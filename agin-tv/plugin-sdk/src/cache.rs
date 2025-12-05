@@ -1,28 +1,19 @@
+pub mod manager;
+pub mod stub;
+
+pub use manager::CacheManager;
+pub use stub::CacheStub;
+
 use std::time::Duration;
 
+use async_trait::async_trait;
 use thiserror::Error;
-
-#[derive(Clone, Default)]
-pub struct CacheManager {}
 
 #[derive(Debug, Error)]
 pub enum CacheError {}
 
-impl CacheManager {
-    pub fn new() -> Self {
-        CacheManager {}
-    }
-
-    pub fn get(&self, key: impl Into<String>) -> Result<Option<String>, CacheError> {
-        Ok(None)
-    }
-
-    pub fn set(
-        &self,
-        key: impl Into<String>,
-        value: impl Into<String>,
-        ttl: Option<Duration>,
-    ) -> Result<(), CacheError> {
-        Ok(())
-    }
+#[async_trait]
+pub trait CacheProvider: Send + Sync + 'static {
+    async fn get(&self, key: &str) -> Result<Option<String>, CacheError>;
+    async fn set(&self, key: &str, value: &str, ttl: Option<Duration>) -> Result<(), CacheError>;
 }
