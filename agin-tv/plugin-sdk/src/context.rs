@@ -11,10 +11,10 @@ pub struct Context<T: Send + Sync + 'static> {
     pub cache: Arc<dyn CacheProvider>,
 }
 
-impl<T: Send + Sync + 'static> Context<T> {
-    pub fn new_stub<S: Send + Sync + Clone + 'static>(state: S) -> Context<S> {
+impl<T: Send + Sync + Clone + 'static> Context<T> {
+    pub fn new_stub(state: T) -> Context<T> {
         Context {
-            state: Arc::new(state),
+            state: Arc::new(state.clone()),
             cache: Arc::new(CacheStub {}),
         }
     }
