@@ -66,10 +66,13 @@ fn generate_handler(mut inv: Invocation) -> Result<proc_macro2::TokenStream, dar
     let ctx_type_with_static =
         syn::fold::fold_type(&mut crate::util::AllLifetimesToStatic, ctx_type.clone());
 
-    let function_ident =
-        std::mem::replace(&mut inv.function.sig.ident, syn::parse_quote! { inner });
+    let current_ident = inv.function.sig.ident.clone();
+    let inner_ident = syn::Ident::new(&format!("{current_ident}_inner"), current_ident.span());
+
+    let function_ident = std::mem::replace(&mut inv.function.sig.ident, inner_ident);
     let function_generics = &inv.function.sig.generics;
-    let function_visibility = &inv.function.vis;
+    let function_visibility = inv.function.vis.clone();
+    inv.function.vis = syn::Visibility::Inherited;
     let function = &inv.function;
 
     let providers = inv.args.supports.iter().map(|lit| {
@@ -78,11 +81,11 @@ fn generate_handler(mut inv: Invocation) -> Result<proc_macro2::TokenStream, dar
     let info = generate_info(&inv);
 
     Ok(quote! {
+        #function
         #[allow(clippy::str_to_string)]
         #function_visibility fn #function_ident #function_generics() -> ::plugin_sdk::handler::HandlerMetadata<
             <#ctx_type_with_static as plugin_sdk::_GetGenerics>::T
         > {
-            #function
 
             ::plugin_sdk::handler::HandlerMetadata {
                 providers: vec![#(#providers),*],
