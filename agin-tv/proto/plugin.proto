@@ -86,15 +86,15 @@ message GetSourcesResponse {
 
 // A single source of media content (not yet resolved)
 message Source {
-    // The provider that produced this source
+    // The provider that this source targets
     string provider_id = 1;
 
     // Link or identifier to hand to a link resolver
     string link = 2;
 
     // Optional human readable metadata
-    string quality = 3;
-    string audio = 4;
+    optional string quality = 3;
+    optional string audio = 4;
 }
 
 service LinkResolverService {
