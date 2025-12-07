@@ -95,6 +95,9 @@ message Source {
     // Optional human readable metadata
     optional string quality = 3;
     optional string audio = 4;
+
+    // Link ID from a previous source provider (useful for chaining providers)
+    optional string link_id = 5;
 }
 
 service LinkResolverService {
