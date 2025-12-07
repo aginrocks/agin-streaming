@@ -63,6 +63,19 @@ message SearchResult {
 
 service SourceProviderService {
     rpc GetSources (GetSourcesRequest) returns (GetSourcesResponse);
+    rpc ResolveSource (ResolveSourceRequest) returns (ResolveSourceResponse);
+}
+
+message ResolveSourceRequest {
+    // Provider being targeted
+    string provider_id = 1;
+
+    // Link ID from a previous source provider
+    string link_id = 2;
+}
+
+message ResolveSourceResponse {
+    repeated Source sources = 1;
 }
 
 message GetSourcesRequest {
@@ -78,16 +91,13 @@ message GetSourcesRequest {
 
     optional int32 season = 5;
     optional int32 episode = 6;
-
-    // Link ID from a previous source provider (useful for chaining providers)
-    optional string link_id = 7;
 }
 
 message GetSourcesResponse {
     repeated Source sources = 1;
 }
 
-// A single source of media content (not yet resolved)
+// A single source of media content (not yet resolved for playback)
 message Source {
     // The provider that this source targets
     string provider_id = 1;
