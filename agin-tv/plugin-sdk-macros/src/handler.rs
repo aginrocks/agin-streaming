@@ -1,5 +1,5 @@
 use proc_macro::TokenStream;
-use quote::{ToTokens, quote};
+use quote::quote;
 use syn::spanned::Spanned;
 
 use crate::handler::{
@@ -10,10 +10,7 @@ use crate::handler::{
 pub mod args;
 pub mod info;
 
-pub fn handler(
-    args: RawHandlerArgs,
-    mut function: syn::ItemFn,
-) -> Result<TokenStream, darling::Error> {
+pub fn handler(args: RawHandlerArgs, function: syn::ItemFn) -> Result<TokenStream, darling::Error> {
     if function.sig.asyncness.is_none() {
         return Err(syn::Error::new(function.sig.span(), "handler function must be async").into());
     }

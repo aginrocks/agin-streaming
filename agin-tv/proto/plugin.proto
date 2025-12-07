@@ -37,6 +37,7 @@ enum ServiceType {
     SEARCH = 0;
     SOURCE_PROVIDER = 1;
     LINK_RESOLVER = 2;
+    SOURCE_RESOLVER = 3;
 }
 
 service SearchService {

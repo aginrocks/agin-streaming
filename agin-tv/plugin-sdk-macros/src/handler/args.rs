@@ -8,6 +8,8 @@ pub struct RawHandlerArgs {
     pub link_resolver: bool,
     #[darling(default)]
     pub source_provider: bool,
+    #[darling(default)]
+    pub source_resolver: bool,
     pub supports: Vec<LitStr>,
 }
 
@@ -24,11 +26,14 @@ impl RawHandlerArgs {
         if self.source_provider {
             true_fields.push(HandlerType::SourceProvider);
         }
+        if self.source_resolver {
+            true_fields.push(HandlerType::SourceResolver);
+        }
 
         match true_fields.len() {
             1 => Ok(true_fields[0]),
             _ => Err(
-                "exactly one of `search`, `link_resolver`, or `source_provider` must be set"
+                "exactly one of `search`, `link_resolver`, `source_provider` or `source_resolver` must be set"
                     .to_string(),
             ),
         }
@@ -58,4 +63,5 @@ pub enum HandlerType {
     Search,
     LinkResolver,
     SourceProvider,
+    SourceResolver,
 }

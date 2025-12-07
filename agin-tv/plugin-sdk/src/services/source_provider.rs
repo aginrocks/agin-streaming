@@ -2,7 +2,8 @@ use std::sync::Arc;
 
 use futures::future::join_all;
 use plugin_proto::{
-    GetSourcesRequest, GetSourcesResponse, source_provider_service_server::SourceProviderService,
+    GetSourcesRequest, GetSourcesResponse, ResolveSourceRequest, ResolveSourceResponse,
+    source_provider_service_server::SourceProviderService,
 };
 use tonic::{Request, Response, Status};
 
@@ -50,5 +51,12 @@ impl<T: Send + Sync + Clone + 'static> SourceProviderService for SourceProvider<
         let sources_response = GetSourcesResponse { sources: results };
 
         Ok(Response::new(sources_response))
+    }
+
+    async fn resolve_source(
+        &self,
+        request: Request<ResolveSourceRequest>,
+    ) -> Result<Response<ResolveSourceResponse>, Status> {
+        unimplemented!()
     }
 }

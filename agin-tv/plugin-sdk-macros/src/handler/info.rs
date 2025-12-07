@@ -7,6 +7,7 @@ pub fn generate_info(inv: &Invocation) -> proc_macro2::TokenStream {
         HandlerType::Search => search_callback(name),
         HandlerType::SourceProvider => source_provider_callback(name),
         HandlerType::LinkResolver => link_resolver_callback(name),
+        HandlerType::SourceResolver => source_resolver_callback(name),
     }
 }
 
@@ -21,6 +22,14 @@ pub fn search_callback(name: &proc_macro2::Ident) -> proc_macro2::TokenStream {
 pub fn source_provider_callback(name: &proc_macro2::Ident) -> proc_macro2::TokenStream {
     quote! {
         ::plugin_sdk::handler::HandlerInfo::SourceProvider(::plugin_sdk::handler::SourceProviderHandler {
+            callback: |ctx, request| Box::pin(async move { #name(ctx, request).await }),
+        })
+    }
+}
+
+pub fn source_resolver_callback(name: &proc_macro2::Ident) -> proc_macro2::TokenStream {
+    quote! {
+        ::plugin_sdk::handler::HandlerInfo::SourceResolver(::plugin_sdk::handler::SourceResolverHandler {
             callback: |ctx, request| Box::pin(async move { #name(ctx, request).await }),
         })
     }

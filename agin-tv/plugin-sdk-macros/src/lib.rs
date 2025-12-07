@@ -4,9 +4,6 @@ mod util;
 use darling::FromMeta;
 use proc_macro::TokenStream;
 
-#[derive(Debug, FromMeta)]
-struct Args {}
-
 /// This macro transforms an async function into a handler used by the core Agin TV server.
 ///
 /// You need to provide a list of providers supported by this handler.
