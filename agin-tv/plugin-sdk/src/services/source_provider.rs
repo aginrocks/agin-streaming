@@ -57,6 +57,36 @@ impl<T: Send + Sync + Clone + 'static> SourceProviderService for SourceProvider<
         &self,
         request: Request<ResolveSourceRequest>,
     ) -> Result<Response<ResolveSourceResponse>, Status> {
-        unimplemented!()
+        let matching_services = self.sdk.services.iter().filter_map(|s| {
+            let HandlerInfo::SourceResolver(source_resovler) = &s.info else {
+                return None;
+            };
+            if s.providers.contains(&request.get_ref().provider_id) {
+                Some(source_resovler)
+            } else {
+                None
+            }
+        });
+
+        let handles = matching_services.map(|service| {
+            tokio::spawn({
+                (service.callback)(self.sdk.context.clone(), request.get_ref().clone())
+            })
+        });
+
+        let results = join_all(handles).await;
+
+        let results = results
+            .into_iter()
+            .filter_map(|res| match res {
+                Ok(Ok(response)) => Some(response.sources),
+                _ => None,
+            })
+            .collect::<Vec<_>>()
+            .concat();
+
+        let sources_response = ResolveSourceResponse { sources: results };
+
+        Ok(Response::new(sources_response))
     }
 }
