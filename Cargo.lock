@@ -2446,6 +2446,7 @@ dependencies = [
  "tonic-prost",
  "tonic-prost-build",
  "tower-service",
+ "tracing",
 ]
 
 [[package]]

@@ -1,5 +1,6 @@
 use plugin_proto::Service;
 use std::{net::SocketAddr, sync::Arc};
+use tracing::info;
 
 use crate::{cache::CacheManager, context::Context, handler::HandlerMetadata, services};
 
@@ -40,6 +41,8 @@ impl<S: Send + Sync + Clone + 'static> PluginSdk<S> {
     }
 
     pub async fn listen(self, address: SocketAddr) -> Result<(), tonic::transport::Error> {
+        info!("Loaded {} services", self.services.len());
+        info!("Listening on {address}");
         services::serve(self, address).await
     }
 }
