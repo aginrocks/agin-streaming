@@ -5,6 +5,7 @@ use plugin_proto::{
     ResolveRequest, ResolveResponse, link_resolver_service_server::LinkResolverService,
 };
 use tonic::{Request, Response, Status};
+use tracing::info;
 
 use crate::{handler::HandlerInfo, sdk::PluginSdk};
 
@@ -19,6 +20,7 @@ impl<T: Send + Sync + Clone + 'static> LinkResolverService for LinkResolver<T> {
         &self,
         request: Request<ResolveRequest>,
     ) -> Result<Response<ResolveResponse>, Status> {
+        info!("Received request");
         let matching_services = self.sdk.services.iter().filter_map(|s| {
             let HandlerInfo::LinkResolver(link_resolver) = &s.info else {
                 return None;

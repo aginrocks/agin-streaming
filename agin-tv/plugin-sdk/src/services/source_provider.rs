@@ -6,6 +6,7 @@ use plugin_proto::{
     source_provider_service_server::SourceProviderService,
 };
 use tonic::{Request, Response, Status};
+use tracing::info;
 
 use crate::{handler::HandlerInfo, sdk::PluginSdk};
 
@@ -20,6 +21,7 @@ impl<T: Send + Sync + Clone + 'static> SourceProviderService for SourceProvider<
         &self,
         request: Request<GetSourcesRequest>,
     ) -> Result<Response<GetSourcesResponse>, Status> {
+        info!("Received request");
         let matching_services = self.sdk.services.iter().filter_map(|s| {
             let HandlerInfo::SourceProvider(source_provider) = &s.info else {
                 return None;
@@ -57,6 +59,7 @@ impl<T: Send + Sync + Clone + 'static> SourceProviderService for SourceProvider<
         &self,
         request: Request<ResolveSourceRequest>,
     ) -> Result<Response<ResolveSourceResponse>, Status> {
+        info!("Received request");
         let matching_services = self.sdk.services.iter().filter_map(|s| {
             let HandlerInfo::SourceResolver(source_resovler) = &s.info else {
                 return None;
