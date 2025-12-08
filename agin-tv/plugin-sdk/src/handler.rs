@@ -5,12 +5,15 @@ use plugin_proto::{
 };
 use thiserror::Error;
 
-use crate::{BoxFuture, context::Context};
+use crate::{BoxFuture, cache::CacheError, context::Context};
 
 #[derive(Debug, Error)]
 pub enum HandlerError {
     #[error("Reqwest error: {0}")]
     ReqwestError(#[from] reqwest::Error),
+
+    #[error("Cache layer error: {0}")]
+    CacheError(#[from] CacheError),
 
     #[error(transparent)]
     Other(#[from] Report),
