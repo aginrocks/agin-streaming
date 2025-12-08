@@ -3,6 +3,7 @@ use std::sync::Arc;
 use futures::future::join_all;
 use plugin_proto::{SearchRequest, SearchResponse, search_service_server::SearchService};
 use tonic::{Request, Response, Status};
+use tracing::info;
 
 use crate::{handler::HandlerInfo, sdk::PluginSdk};
 
@@ -17,6 +18,7 @@ impl<T: Send + Sync + Clone + 'static> SearchService for Search<T> {
         &self,
         request: Request<SearchRequest>,
     ) -> Result<Response<SearchResponse>, Status> {
+        info!("Received request");
         let search_services = self.sdk.services.iter().filter_map(|s| {
             let HandlerInfo::Search(search) = &s.info else {
                 return None;
