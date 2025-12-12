@@ -6,7 +6,8 @@ use http::StatusCode;
 use plugin_host::PluginHost;
 use sea_orm::Database;
 use tokio::net::TcpListener;
-use tracing::{error, instrument, level_filters::LevelFilter};
+use tower_http::trace::{DefaultMakeSpan, DefaultOnResponse, TraceLayer};
+use tracing::{Level, error, instrument, level_filters::LevelFilter};
 use tracing_error::ErrorLayer;
 use tracing_subscriber::{fmt::format::FmtSpan, layer::SubscriberExt, util::SubscriberInitExt};
 use utoipa_rapidoc::RapiDoc;
@@ -55,12 +56,12 @@ pub async fn init_axum(
     let router = router
         .nest(openapi_prefix, docs)
         .layer(Extension(state))
-        .fallback(|| async { (StatusCode::NOT_FOUND, "Not found").into_response() });
-    // .layer(
-    //     TraceLayer::new_for_http()
-    //         .make_span_with(DefaultMakeSpan::new().level(Level::INFO))
-    //         .on_response(DefaultOnResponse::new().level(Level::INFO)),
-    // );
+        .fallback(|| async { (StatusCode::NOT_FOUND, "Not found").into_response() })
+        .layer(
+            TraceLayer::new_for_http()
+                .make_span_with(DefaultMakeSpan::new().level(Level::DEBUG))
+                .on_response(DefaultOnResponse::new().level(Level::DEBUG)),
+        );
 
     Ok(router)
 }

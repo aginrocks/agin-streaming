@@ -8,7 +8,7 @@ mod settings;
 mod state;
 mod util;
 
-use std::{path::PathBuf, sync::Arc};
+use std::sync::Arc;
 
 use color_eyre::{Result, eyre::Context};
 use rustls::crypto::{CryptoProvider, aws_lc_rs};
@@ -17,7 +17,6 @@ use utoipa::OpenApi;
 
 use crate::{
     init::{init_axum, init_database, init_listener, init_plugins, init_tmdb, init_tracing},
-    plugins::PluginsConfig,
     settings::Settings,
     state::AppState,
 };

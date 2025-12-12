@@ -2443,8 +2443,6 @@ dependencies = [
  "thiserror",
  "tokio",
  "tonic",
- "tonic-prost",
- "tonic-prost-build",
  "tower-service",
  "tracing",
 ]
