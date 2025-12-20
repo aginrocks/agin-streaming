@@ -9,7 +9,6 @@ use plugin_host::{PluginHost, plugin::Plugin};
 use tokio::{
     fs,
     sync::{Mutex, mpsc},
-    task::JoinHandle,
 };
 use tokio_util::sync::CancellationToken;
 use tracing::{error, info, warn};

@@ -3,7 +3,6 @@ use std::{net::SocketAddr, sync::Arc};
 use axum::{Extension, Json, Router, response::IntoResponse, routing::get};
 use color_eyre::Result;
 use http::StatusCode;
-use plugin_host::PluginHost;
 use sea_orm::Database;
 use tokio::net::TcpListener;
 use tower_http::trace::{DefaultMakeSpan, DefaultOnResponse, TraceLayer};
@@ -14,11 +13,7 @@ use utoipa_rapidoc::RapiDoc;
 use utoipa_redoc::{Redoc, Servable};
 use utoipa_scalar::{Scalar, Servable as _};
 
-use crate::{
-    plugins::{PluginOptions, PluginsConfig},
-    settings::Settings,
-    state::AppState,
-};
+use crate::{plugins::PluginsConfig, settings::Settings, state::AppState};
 
 pub fn init_tracing(filter: LevelFilter) -> Result<()> {
     tracing_subscriber::Registry::default()
