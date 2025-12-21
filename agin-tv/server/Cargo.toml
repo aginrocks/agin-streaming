@@ -66,3 +66,4 @@ tonic = { version = "0.14.2", features = ["tls-aws-lc"] }
 plugin_host = { version = "0.1.0", path = "../plugin-host" }
 notify = "8.2.0"
 tokio-util = "0.7.17"
+plugin_proto = { version = "0.1.0", path = "../proto/plugin" }

@@ -1,3 +1,5 @@
+mod season;
+
 use axum::{
     Extension, Json,
     extract::{Path, Query},
@@ -14,7 +16,9 @@ use crate::{
 };
 
 pub fn routes() -> OpenApiRouter<AppState> {
-    OpenApiRouter::new().routes(routes!(search))
+    OpenApiRouter::new()
+        .routes(routes!(search))
+        .nest("/{season}", season::routes())
 }
 
 #[derive(Deserialize, IntoParams)]

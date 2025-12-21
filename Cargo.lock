@@ -2423,9 +2423,11 @@ version = "0.1.0"
 dependencies = [
  "prost",
  "reqwest",
+ "serde",
  "tonic",
  "tonic-prost",
  "tonic-prost-build",
+ "utoipa",
 ]
 
 [[package]]
@@ -3501,6 +3503,7 @@ dependencies = [
  "miette",
  "notify",
  "plugin_host",
+ "plugin_proto",
  "rand 0.9.2",
  "reqwest",
  "rust_decimal",
