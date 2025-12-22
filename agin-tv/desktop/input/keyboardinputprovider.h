@@ -1,10 +1,10 @@
 #pragma once
-#include "inputprovider.h"
-
 #include <QKeyEvent>
 #include <QMap>
 
-class KeyboardInputProvider : public InputProvider {
+#include "inputprovider.h"
+
+class KeyboardInputProvider: public InputProvider {
     Q_OBJECT
 
 public:
