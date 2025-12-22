@@ -3,3 +3,5 @@ config.toml
 plugins.toml
 /data
 .DS_Store
+build
+.cache

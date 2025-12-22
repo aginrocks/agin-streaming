@@ -1,8 +1,7 @@
 #pragma once
 #include <QQuickItem>
 
-class Navigable : public QObject
-{
+class Navigable : public QObject {
     Q_OBJECT
     QML_ELEMENT
     QML_ATTACHED(Navigable)
@@ -11,13 +10,13 @@ class Navigable : public QObject
     Q_PROPERTY(bool hasFocus READ hasFocus NOTIFY hasFocusChanged)
 
 public:
-    explicit Navigable(QObject *parent = nullptr);
+    explicit Navigable(QObject* parent = nullptr);
     ~Navigable() {}
 
     bool canNavigate() const { return m_canNavigate; }
     bool hasFocus() const { return m_hasFocus; }
 
-    static Navigable *qmlAttachedProperties(QObject *object) { return new Navigable(object); }
+    static Navigable* qmlAttachedProperties(QObject* object) { return new Navigable(object); }
 
 public slots:
     void setCanNavigate(bool canNavigate) { m_canNavigate = canNavigate; }

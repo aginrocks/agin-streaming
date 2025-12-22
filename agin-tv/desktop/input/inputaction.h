@@ -2,8 +2,7 @@
 #include <QObject>
 #include <QVariant>
 
-class InputAction
-{
+class InputAction {
     Q_GADGET
 public:
     enum Type {
@@ -32,11 +31,8 @@ public:
     Q_ENUM(State);
 
     InputAction() = default;
-    InputAction(Type type, State state, const QVariant &data = QVariant())
-        : m_type(type)
-        , m_state(state)
-        , m_data(data)
-    {}
+    InputAction(Type type, State state, const QVariant& data = QVariant())
+        : m_type(type), m_state(state), m_data(data) {}
 
     Type type() const { return m_type; }
     State state() const { return m_state; }

@@ -8,6 +8,8 @@ find_package(Qt6 REQUIRED COMPONENTS Quick)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
+set(QT_QML_GENERATE_QMLLS_INI ON)
+
 qt_add_executable(appAginTV
     main.cpp
 )
@@ -15,7 +17,7 @@ qt_add_executable(appAginTV
 qt_add_qml_module(appAginTV
     URI AginTV
     QML_FILES
-        Main.qml
+        qml/Main.qml
         SOURCES input/inputaction.h
         SOURCES input/inputprovider.h
         SOURCES input/inputprovider.h input/inputprovider.cpp
