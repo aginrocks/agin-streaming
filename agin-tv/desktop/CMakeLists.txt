@@ -4,11 +4,61 @@ project(AginTV VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick Gui Core Widgets)
+find_package(SDL2 REQUIRED)
 
 qt_standard_project_setup(REQUIRES 6.8)
 
 set(QT_QML_GENERATE_QMLLS_INI ON)
+
+set(QJOYSTICKS_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/external/QJoysticks)
+file(RELATIVE_PATH QJOYSTICKS_QRC ${CMAKE_CURRENT_SOURCE_DIR}
+    ${QJOYSTICKS_ROOT}/etc/resources/qjoysticks-res.qrc)
+
+set(QJOYSTICKS_SOURCES
+    ${QJOYSTICKS_ROOT}/src/QJoysticks.cpp
+    ${QJOYSTICKS_ROOT}/src/QJoysticks/Android_Joystick.cpp
+    ${QJOYSTICKS_ROOT}/src/QJoysticks/SDL_Joysticks.cpp
+    ${QJOYSTICKS_ROOT}/src/QJoysticks/VirtualJoystick.cpp
+    ${QJOYSTICKS_ROOT}/src/QJoysticks.h
+    ${QJOYSTICKS_ROOT}/src/QJoysticks/JoysticksCommon.h
+    ${QJOYSTICKS_ROOT}/src/QJoysticks/Android_Joystick.h
+    ${QJOYSTICKS_ROOT}/src/QJoysticks/SDL_Joysticks.h
+    ${QJOYSTICKS_ROOT}/src/QJoysticks/VirtualJoystick.h
+)
+
+add_library(QJoysticks STATIC ${QJOYSTICKS_SOURCES})
+
+qt_add_resources(QJoysticks "qjoysticks_resources"
+    FILES
+        ${QJOYSTICKS_QRC}
+)
+
+set(_QJOYSTICKS_SDL_TARGET "")
+if(TARGET SDL2::SDL2)
+    set(_QJOYSTICKS_SDL_TARGET SDL2::SDL2)
+elseif(TARGET SDL2::SDL2-static)
+    set(_QJOYSTICKS_SDL_TARGET SDL2::SDL2-static)
+elseif(SDL2_LIBRARIES)
+    set(_QJOYSTICKS_SDL_TARGET ${SDL2_LIBRARIES})
+else()
+    message(FATAL_ERROR "SDL2 package did not expose link targets or library list")
+endif()
+
+target_link_libraries(QJoysticks
+    PUBLIC Qt6::Core Qt6::Gui Qt6::Widgets
+    PRIVATE ${_QJOYSTICKS_SDL_TARGET}
+)
+
+target_compile_definitions(QJoysticks PRIVATE SDL_SUPPORTED)
+
+target_include_directories(QJoysticks
+    PUBLIC
+        ${QJOYSTICKS_ROOT}/src
+        ${QJOYSTICKS_ROOT}/src/QJoysticks
+    PRIVATE
+        ${SDL2_INCLUDE_DIRS}
+)
 
 qt_add_executable(appAginTV
     main.cpp
@@ -38,7 +88,9 @@ set_target_properties(appAginTV PROPERTIES
 )
 
 target_link_libraries(appAginTV
-    PRIVATE Qt6::Quick
+    PRIVATE
+        Qt6::Quick
+        QJoysticks
 )
 
 target_include_directories(appAginTV PRIVATE
