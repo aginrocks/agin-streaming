@@ -1,8 +1,11 @@
 #pragma once
+#include <qcontainerfwd.h>
+
 #include <QObject>
 
 #include "inputaction.h"
 #include "inputprovider.h"
+#include "providershistory.h"
 
 class InputDispatcher: public QObject {
     Q_OBJECT
@@ -28,9 +31,11 @@ signals:
     void providerRegistered(InputProvider* provider);
     void providerUnregistered(InputProvider* provider);
     void actionReceived(const InputAction& action);
+    void activeDeviceChanged(InputProvider::DeviceType device);
 
 private slots:
     void onProviderAction(const InputAction& action);
+    void onProviderActiveChanged(bool active);
 
 private:
     InputDispatcher() = default;
@@ -42,4 +47,17 @@ private:
     QList<InputProvider*> m_providers;
     InputProvider::DeviceType m_activeDevice =
         InputProvider::DeviceType::Keyboard;
+    ProvidersHistory m_providersHistory;
+
+    void setActiveDevice(InputProvider::DeviceType device) {
+        if (m_activeDevice == device)
+            return;
+
+        m_activeDevice = device;
+        emit activeDeviceChanged(device);
+
+        m_providersHistory.addProvider(device);
+
+        qDebug() << "Active input device changed to" << device;
+    }
 };

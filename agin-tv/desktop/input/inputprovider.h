@@ -17,16 +17,31 @@ public:
 
     virtual ~InputProvider() = default;
 
+    DeviceType deviceType() const {
+        return m_deviceType;
+    }
+
+    bool isActive() const {
+        return m_active;
+    }
+
 signals:
-    void actionTriggered(const InputAction &action);
+    void actionTriggered(const InputAction& action);
+    void activeChanged(bool active);
 
 protected:
     void emitAction(
         InputAction::Type type,
         InputAction::State state,
-        const QVariant &data = QVariant()
+        const QVariant& data = QVariant()
     );
+
+    void setActive(bool active) {
+        m_active = active;
+        emit activeChanged(active);
+    }
 
 private:
     DeviceType m_deviceType;
+    bool m_active = false;
 };
