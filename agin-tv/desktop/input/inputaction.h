@@ -24,6 +24,8 @@ public:
         Action2, // Contextual action 2 (Y button)
 
         Menu, // Main Menu
+
+        None,
     };
 
     Q_ENUM(Type);

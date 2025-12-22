@@ -5,6 +5,7 @@
 #include <QKeyEvent>
 #include <QMap>
 
+#include "inputaction.h"
 #include "inputprovider.h"
 
 class GamepadInputProvider: public InputProvider {
@@ -28,5 +29,7 @@ private slots:
     void onPovChanged(const int js, const int pov, const int angle);
 
 private:
+    InputAction::Type m_lastDpadAction = InputAction::Type::None;
+
     void connectSlots();
 };

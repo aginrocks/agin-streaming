@@ -73,11 +73,16 @@ void GamepadInputProvider::onPovChanged(
     const int pov,
     const int angle
 ) {
+    // TODO: Add repeating
+
     qDebug() << "POV event from joystick" << js << "POV:" << pov
              << "Angle:" << angle;
 
     InputAction::Type action;
     switch (angle) {
+        case -1:
+            action = m_lastDpadAction;
+            break;
         case 0:
             action = InputAction::Type::NavigateUp;
             break;
@@ -95,5 +100,16 @@ void GamepadInputProvider::onPovChanged(
             return;
     }
 
-    emit actionTriggered(InputAction(action, InputAction::State::Pressed));
+    InputAction::State state;
+
+    // TODO: More robust handling
+    if (angle == -1) {
+        m_lastDpadAction = InputAction::Type::None;
+        state = InputAction::State::Released;
+    } else {
+        m_lastDpadAction = action;
+        state = InputAction::State::Pressed;
+    }
+
+    emit actionTriggered(InputAction(action, state));
 }

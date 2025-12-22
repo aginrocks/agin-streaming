@@ -1,5 +1,6 @@
 #include "inputdispatcher.h"
 
+#include <qdebug.h>
 #include <qobject.h>
 
 #include "inputprovider.h"
@@ -46,6 +47,8 @@ void InputDispatcher::unregisterProvider(InputProvider* provider) {
 }
 
 void InputDispatcher::onProviderAction(const InputAction& action) {
+    qDebug() << "Action received:" << action.type() << action.state();
+
     emit actionReceived(action);
     auto* provider = qobject_cast<InputProvider*>(sender());
     if (provider) {

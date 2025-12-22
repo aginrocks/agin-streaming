@@ -34,11 +34,6 @@ bool KeyboardInputProvider::handleKeyEvent(QKeyEvent* event) {
         return false;
     }
 
-    qDebug() << "Emitting action from keyboard:" << *it
-             << (actionState == InputAction::Pressed        ? "Pressed"
-                     : actionState == InputAction::Released ? "Released"
-                                                            : "Repeat");
-
     emitAction(*it, actionState);
     return true;
 }
