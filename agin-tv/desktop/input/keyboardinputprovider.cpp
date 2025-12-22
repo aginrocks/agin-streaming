@@ -27,6 +27,8 @@ bool KeyboardInputProvider::handleKeyEvent(QKeyEvent* event) {
         actionState =
             event->isAutoRepeat() ? InputAction::Repeat : InputAction::Pressed;
     } else if (event->type() == QEvent::KeyRelease) {
+        if (event->isAutoRepeat())
+            return true; // Ignore release that accompanies repeats
         actionState = InputAction::Released;
     } else {
         return false;
