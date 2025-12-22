@@ -10,6 +10,8 @@ class KeyboardInputProvider: public InputProvider {
 public:
     explicit KeyboardInputProvider(QObject* parent = nullptr);
 
+    bool handleKeyEvent(QKeyEvent* event);
+
 private:
     QMap<int, InputAction::Type> m_keyMap;
 
