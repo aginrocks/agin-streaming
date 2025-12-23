@@ -4,6 +4,7 @@
 #include <qobject.h>
 
 #include "inputprovider.h"
+#include "navigation/navigationmanager.h"
 
 void InputDispatcher::registerProvider(InputProvider* provider) {
     if (m_providers.contains(provider))
@@ -46,6 +47,10 @@ void InputDispatcher::unregisterProvider(InputProvider* provider) {
     emit providerUnregistered(provider);
 }
 
+void InputDispatcher::setNavigationManager(NavigationManager* manager) {
+    m_navigationManager = manager;
+}
+
 void InputDispatcher::onProviderAction(const InputAction& action) {
     qDebug() << "Action received:" << action.type() << action.state();
 
@@ -54,6 +59,8 @@ void InputDispatcher::onProviderAction(const InputAction& action) {
     if (provider) {
         setActiveDevice(provider->deviceType());
     }
+
+    handleNavigationAction(action);
 }
 
 void InputDispatcher::onProviderActiveChanged(bool active) {
@@ -67,4 +74,32 @@ void InputDispatcher::onProviderActiveChanged(bool active) {
             setActiveDevice(previousDevice);
         }
     }
+}
+
+void InputDispatcher::handleNavigationAction(const InputAction& action) {
+    if (!m_navigationManager)
+        return;
+
+    if (action.isReleased())
+        return;
+
+    Direction direction;
+    switch (action.type()) {
+        case InputAction::NavigateUp:
+            direction = Direction::Up;
+            break;
+        case InputAction::NavigateDown:
+            direction = Direction::Down;
+            break;
+        case InputAction::NavigateLeft:
+            direction = Direction::Left;
+            break;
+        case InputAction::NavigateRight:
+            direction = Direction::Right;
+            break;
+        default:
+            return;
+    }
+
+    m_navigationManager->navigate(static_cast<int>(direction));
 }

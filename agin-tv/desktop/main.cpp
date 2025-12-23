@@ -5,10 +5,13 @@
 #include <QGuiApplication>
 #include <QKeyEvent>
 #include <QQmlApplicationEngine>
+#include <QQuickItem>
+#include <QQuickWindow>
 
 #include "input/gamepadinputprovider.h"
 #include "input/inputdispatcher.h"
 #include "input/keyboardinputprovider.h"
+#include "navigation/navigationmanager.h"
 
 class MyApp: public QGuiApplication {
     Q_OBJECT
@@ -71,12 +74,30 @@ int main(int argc, char* argv[]) {
     enableVirtualJoystick();
 
     QQmlApplicationEngine engine;
+    auto navigationManager = new NavigationManager(&engine);
+    InputDispatcher::instance()->setNavigationManager(navigationManager);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreationFailed,
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection
+    );
+
+    QObject::connect(
+        &engine,
+        &QQmlApplicationEngine::objectCreated,
+        navigationManager,
+        [navigationManager](QObject* obj, const QUrl&) {
+            if (!obj)
+                return;
+
+            if (auto window = qobject_cast<QQuickWindow*>(obj)) {
+                navigationManager->setRootItem(window->contentItem());
+            } else if (auto item = qobject_cast<QQuickItem*>(obj)) {
+                navigationManager->setRootItem(item);
+            }
+        }
     );
     engine.loadFromModule("AginTV", "Main");
     qDebug() << "Starting App";

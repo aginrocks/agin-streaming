@@ -7,6 +7,8 @@
 #include "inputprovider.h"
 #include "providershistory.h"
 
+class NavigationManager;
+
 class InputDispatcher: public QObject {
     Q_OBJECT
 
@@ -18,6 +20,8 @@ public:
 
     void registerProvider(InputProvider* provider);
     void unregisterProvider(InputProvider* provider);
+
+    void setNavigationManager(NavigationManager* manager);
 
     QList<InputProvider*> providers() const {
         return m_providers;
@@ -48,6 +52,9 @@ private:
     InputProvider::DeviceType m_activeDevice =
         InputProvider::DeviceType::Keyboard;
     ProvidersHistory m_providersHistory;
+    NavigationManager* m_navigationManager = nullptr;
+
+    void handleNavigationAction(const InputAction& action);
 
     void setActiveDevice(InputProvider::DeviceType device) {
         if (m_activeDevice == device)

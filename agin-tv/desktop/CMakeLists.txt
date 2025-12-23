@@ -76,6 +76,10 @@ qt_add_qml_module(appAginTV
         SOURCES input/inputdispatcher.h input/inputdispatcher.cpp
         SOURCES input/gamepadinputprovider.h input/gamepadinputprovider.cpp
         SOURCES input/providershistory.h
+        SOURCES navigation/navigationengine.h navigation/navigationengine.cpp
+        SOURCES navigation/navigationmanager.h navigation/navigationmanager.cpp
+        SOURCES navigation/navigationnode.h
+
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
