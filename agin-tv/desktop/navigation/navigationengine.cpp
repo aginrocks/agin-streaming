@@ -1,25 +1,25 @@
 #include "navigationengine.h"
 
+#include <QDebug>
 #include <QtMath>
 #include <limits>
-#include <QDebug>
 
 namespace {
 // Convert a Direction enum to a readable string for logging.
 const char* dirToString(Direction dir) {
     switch (dir) {
-    case Direction::Up:
-        return "Up";
-    case Direction::Down:
-        return "Down";
-    case Direction::Left:
-        return "Left";
-    case Direction::Right:
-        return "Right";
+        case Direction::Up:
+            return "Up";
+        case Direction::Down:
+            return "Down";
+        case Direction::Left:
+            return "Left";
+        case Direction::Right:
+            return "Right";
     }
     return "Unknown";
 }
-}
+} // namespace
 
 bool NavigationEngine::navigate(Direction dir) {
     qDebug() << "[Navigation] navigate()" << dirToString(dir);
@@ -37,7 +37,8 @@ bool NavigationEngine::navigate(Direction dir) {
 
     NavigationNode* next = findNext(m_currentFocus, dir);
     if (next && next != m_currentFocus) {
-        qDebug() << "[Navigation] moving focus from" << m_currentFocus << "to" << next;
+        qDebug() << "[Navigation] moving focus from" << m_currentFocus << "to"
+                 << next;
         return setFocus(next);
     }
 
@@ -52,7 +53,8 @@ bool NavigationEngine::setFocus(NavigationNode* node) {
     }
 
     m_currentFocus = node;
-    qDebug() << "[Navigation] focus set to" << node << "bounds" << node->bounds();
+    qDebug() << "[Navigation] focus set to" << node << "bounds"
+             << node->bounds();
 
     // Update lastFocused in containing scope
     NavigationScope* scope = findContainingScope(node);
@@ -68,7 +70,8 @@ NavigationEngine::findNext(NavigationNode* from, Direction dir) {
     // 1. Check manual override
     NavigationNode* manual = from->manualTarget(dir);
     if (manual) {
-        qDebug() << "[Navigation] manual target" << manual << "for" << dirToString(dir);
+        qDebug() << "[Navigation] manual target" << manual << "for"
+                 << dirToString(dir);
         return manual;
     }
 
