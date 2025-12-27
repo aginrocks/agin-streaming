@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 REQUIRED COMPONENTS Quick Gui Core Widgets)
 find_package(SDL2 REQUIRED)
 
+qt_policy(SET QTP0001 NEW)
+
 qt_standard_project_setup(REQUIRES 6.8)
 
 set(QT_QML_GENERATE_QMLLS_INI ON)
@@ -64,22 +66,28 @@ qt_add_executable(appAginTV
     main.cpp
 )
 
+set_source_files_properties(qml/theme/Theme.qml
+    PROPERTIES QT_QML_SINGLETON_TYPE TRUE
+)
+
 qt_add_qml_module(appAginTV
     URI AginTV
     QML_FILES
         qml/Main.qml
-        SOURCES input/inputaction.h
-        SOURCES input/inputprovider.h
-        SOURCES input/inputprovider.h input/inputprovider.cpp
-        SOURCES input/keyboardinputprovider.h input/keyboardinputprovider.cpp
-        SOURCES navigation/navigable.h navigation/navigable.cpp
-        SOURCES input/inputdispatcher.h input/inputdispatcher.cpp
-        SOURCES input/gamepadinputprovider.h input/gamepadinputprovider.cpp
-        SOURCES input/providershistory.h
-        SOURCES navigation/navigationengine.h navigation/navigationengine.cpp
-        SOURCES navigation/navigationmanager.h navigation/navigationmanager.cpp
-        SOURCES navigation/navigationnode.h
-
+        qml/theme/Theme.qml
+        qml/components/Cover.qml
+        qml/components/RoundedImage.qml
+    SOURCES
+        input/inputaction.h
+        input/inputprovider.h input/inputprovider.cpp
+        input/keyboardinputprovider.h input/keyboardinputprovider.cpp
+        navigation/navigable.h navigation/navigable.cpp
+        input/inputdispatcher.h input/inputdispatcher.cpp
+        input/gamepadinputprovider.h input/gamepadinputprovider.cpp
+        input/providershistory.h
+        navigation/navigationengine.h navigation/navigationengine.cpp
+        navigation/navigationmanager.h navigation/navigationmanager.cpp
+        navigation/navigationnode.h
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.

@@ -74,6 +74,9 @@ int main(int argc, char* argv[]) {
     enableVirtualJoystick();
 
     QQmlApplicationEngine engine;
+
+    qDebug() << engine.importPathList();
+
     auto navigationManager = new NavigationManager(&engine);
     InputDispatcher::instance()->setNavigationManager(navigationManager);
     QObject::connect(
