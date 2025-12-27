@@ -79,7 +79,7 @@ QtObject {
     }
 
     component Animations: QtObject {
-        readonly property int duration: 300
+        readonly property int duration: 250
         readonly property int easing: Easing.InOutQuad
     }
 }
