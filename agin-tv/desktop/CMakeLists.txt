@@ -62,6 +62,79 @@ target_include_directories(QJoysticks
         ${SDL2_INCLUDE_DIRS}
 )
 
+# Material Color Utilities
+set(MCU_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/external/material-color-utilities)
+
+set(MCU_SOURCES
+    ${MCU_ROOT}/cpp/blend/blend.cc
+    ${MCU_ROOT}/cpp/blend/blend.h
+    ${MCU_ROOT}/cpp/cam/cam.cc
+    ${MCU_ROOT}/cpp/cam/cam.h
+    ${MCU_ROOT}/cpp/cam/hct_solver.cc
+    ${MCU_ROOT}/cpp/cam/hct_solver.h
+    ${MCU_ROOT}/cpp/cam/hct.cc
+    ${MCU_ROOT}/cpp/cam/hct.h
+    ${MCU_ROOT}/cpp/cam/viewing_conditions.cc
+    ${MCU_ROOT}/cpp/cam/viewing_conditions.h
+    ${MCU_ROOT}/cpp/contrast/contrast.cc
+    ${MCU_ROOT}/cpp/contrast/contrast.h
+    ${MCU_ROOT}/cpp/dislike/dislike.cc
+    ${MCU_ROOT}/cpp/dislike/dislike.h
+    ${MCU_ROOT}/cpp/dynamiccolor/contrast_curve.h
+    ${MCU_ROOT}/cpp/dynamiccolor/dynamic_color.cc
+    ${MCU_ROOT}/cpp/dynamiccolor/dynamic_color.h
+    ${MCU_ROOT}/cpp/dynamiccolor/dynamic_scheme.cc
+    ${MCU_ROOT}/cpp/dynamiccolor/dynamic_scheme.h
+    ${MCU_ROOT}/cpp/dynamiccolor/material_dynamic_colors.cc
+    ${MCU_ROOT}/cpp/dynamiccolor/material_dynamic_colors.h
+    ${MCU_ROOT}/cpp/dynamiccolor/tone_delta_pair.h
+    ${MCU_ROOT}/cpp/dynamiccolor/variant.h
+    ${MCU_ROOT}/cpp/palettes/core.h
+    ${MCU_ROOT}/cpp/palettes/tones.cc
+    ${MCU_ROOT}/cpp/palettes/tones.h
+    ${MCU_ROOT}/cpp/quantize/celebi.cc
+    ${MCU_ROOT}/cpp/quantize/celebi.h
+    ${MCU_ROOT}/cpp/quantize/lab.cc
+    ${MCU_ROOT}/cpp/quantize/lab.h
+    ${MCU_ROOT}/cpp/quantize/wsmeans.cc
+    ${MCU_ROOT}/cpp/quantize/wsmeans.h
+    ${MCU_ROOT}/cpp/quantize/wu.cc
+    ${MCU_ROOT}/cpp/quantize/wu.h
+    ${MCU_ROOT}/cpp/scheme/scheme_content.cc
+    ${MCU_ROOT}/cpp/scheme/scheme_content.h
+    ${MCU_ROOT}/cpp/scheme/scheme_expressive.cc
+    ${MCU_ROOT}/cpp/scheme/scheme_expressive.h
+    ${MCU_ROOT}/cpp/scheme/scheme_fidelity.cc
+    ${MCU_ROOT}/cpp/scheme/scheme_fidelity.h
+    ${MCU_ROOT}/cpp/scheme/scheme_fruit_salad.cc
+    ${MCU_ROOT}/cpp/scheme/scheme_fruit_salad.h
+    ${MCU_ROOT}/cpp/scheme/scheme_monochrome.cc
+    ${MCU_ROOT}/cpp/scheme/scheme_monochrome.h
+    ${MCU_ROOT}/cpp/scheme/scheme_neutral.cc
+    ${MCU_ROOT}/cpp/scheme/scheme_neutral.h
+    ${MCU_ROOT}/cpp/scheme/scheme_rainbow.cc
+    ${MCU_ROOT}/cpp/scheme/scheme_rainbow.h
+    ${MCU_ROOT}/cpp/scheme/scheme_tonal_spot.cc
+    ${MCU_ROOT}/cpp/scheme/scheme_tonal_spot.h
+    ${MCU_ROOT}/cpp/scheme/scheme_vibrant.cc
+    ${MCU_ROOT}/cpp/scheme/scheme_vibrant.h
+    ${MCU_ROOT}/cpp/score/score.cc
+    ${MCU_ROOT}/cpp/score/score.h
+    ${MCU_ROOT}/cpp/temperature/temperature_cache.cc
+    ${MCU_ROOT}/cpp/temperature/temperature_cache.h
+    ${MCU_ROOT}/cpp/utils/utils.cc
+    ${MCU_ROOT}/cpp/utils/utils.h
+)
+
+add_library(MaterialColorUtilities STATIC ${MCU_SOURCES})
+
+target_include_directories(MaterialColorUtilities
+    PUBLIC
+        ${MCU_ROOT}
+)
+
+target_compile_options(MaterialColorUtilities PRIVATE -include optional)
+
 qt_add_executable(appAginTV
     main.cpp
 )
@@ -106,6 +179,7 @@ target_link_libraries(appAginTV
     PRIVATE
         Qt6::Quick
         QJoysticks
+        MaterialColorUtilities
 )
 
 target_include_directories(appAginTV PRIVATE
