@@ -77,6 +77,7 @@ qt_add_qml_module(appAginTV
         qml/theme/Theme.qml
         qml/components/Cover.qml
         qml/components/RoundedImage.qml
+        qml/components/Hero.qml
     SOURCES
         input/inputaction.h
         input/inputprovider.h input/inputprovider.cpp

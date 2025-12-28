@@ -13,23 +13,40 @@ Window {
     title: qsTr("Agin TV Navigation Demo")
     color: Theme.colors.background
 
+    property string source: "https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg"
+
+    // Hero {
+    //     activeSource: window.source
+    // }
+
     Item {
         anchors.fill: parent
         anchors.margins: Theme.spacing.s(12)
 
-        RowLayout {
+        ColumnLayout {
             spacing: Theme.spacing.s(4)
 
-            Cover {
-                source: "https://image.tmdb.org/t/p/w1280/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg"
-                Navigable.canNavigate: true
-                isSelected: Navigable.hasFocus
+            Button {
+                text: "Toggle Source"
+                onClicked: {
+                    window.source = window.source.includes("rAiYTfKGqDCRIIqo664sY9XZIvQ") ? "https://image.tmdb.org/t/p/original/iN41Ccw4DctL8npfmYg1j5Tr1eb.jpg" : "https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg";
+                }
             }
 
-            Cover {
-                source: "https://image.tmdb.org/t/p/w1280/iN41Ccw4DctL8npfmYg1j5Tr1eb.jpg"
-                Navigable.canNavigate: true
-                isSelected: Navigable.hasFocus
+            RowLayout {
+                spacing: Theme.spacing.s(4)
+
+                Cover {
+                    source: "https://image.tmdb.org/t/p/w1280/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg"
+                    Navigable.canNavigate: true
+                    isSelected: Navigable.hasFocus
+                }
+
+                Cover {
+                    source: "https://image.tmdb.org/t/p/w1280/iN41Ccw4DctL8npfmYg1j5Tr1eb.jpg"
+                    Navigable.canNavigate: true
+                    isSelected: Navigable.hasFocus
+                }
             }
         }
     }

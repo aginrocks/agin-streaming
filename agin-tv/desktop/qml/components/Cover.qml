@@ -50,7 +50,9 @@ Item {
 
         blurEnabled: true
         blur: 1.0
-        blurMax: 64
+        blurMax: 80
+
+        scale: 1.1
 
         opacity: root.isSelected ? 0.7 : 0.0
 
