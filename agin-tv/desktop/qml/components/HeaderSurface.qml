@@ -2,22 +2,21 @@ import QtQuick
 import QtQuick.Layouts
 import AginTV
 
-Item {
+Rectangle {
     id: root
+
     default property alias content: row.data
+    property real padding: Theme.spacing.s(1.5)
 
-    implicitWidth: row.implicitWidth + row.anchors.margins * 2
-    implicitHeight: row.implicitHeight + row.anchors.margins * 2
+    color: Theme.colors.transparentSurface
+    radius: height / 2
 
-    Rectangle {
-        anchors.fill: parent
-        radius: 999999
-        color: Theme.colors.transparentSurface
-    }
+    implicitWidth: row.implicitWidth + padding * 2
+    implicitHeight: row.implicitHeight + padding * 2
 
     RowLayout {
         id: row
         anchors.fill: parent
-        anchors.margins: Theme.spacing.s(1.5)
+        anchors.margins: root.padding
     }
 }
