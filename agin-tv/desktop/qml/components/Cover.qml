@@ -1,8 +1,7 @@
 pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Effects
-
-import "../theme"
+import AginTV
 
 Item {
     id: root

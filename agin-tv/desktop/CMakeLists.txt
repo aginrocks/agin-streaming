@@ -143,16 +143,13 @@ set_source_files_properties(qml/theme/Theme.qml
     PROPERTIES QT_QML_SINGLETON_TYPE TRUE
 )
 
+file(GLOB_RECURSE AGIN_TV_QML_FILES
+    RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    "qml/*.qml"
+)
+
 qt_add_qml_module(appAginTV
     URI AginTV
-    QML_FILES
-        qml/Main.qml
-        qml/theme/Theme.qml
-        qml/components/Cover.qml
-        qml/components/RoundedImage.qml
-        qml/components/Hero.qml
-        qml/components/DynamicBackground.qml
-        qml/components/HeaderSurface.qml
     SOURCES
         input/inputaction.h
         input/inputprovider.h input/inputprovider.cpp
@@ -164,6 +161,8 @@ qt_add_qml_module(appAginTV
         navigation/navigationengine.h navigation/navigationengine.cpp
         navigation/navigationmanager.h navigation/navigationmanager.cpp
         navigation/navigationnode.h
+    QML_FILES
+        ${AGIN_TV_QML_FILES}
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
