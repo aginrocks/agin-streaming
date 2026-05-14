@@ -144,12 +144,14 @@ set_source_files_properties(qml/theme/Theme.qml
 )
 
 file(GLOB_RECURSE AGIN_TV_QML_FILES
+    CONFIGURE_DEPENDS
     RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
     "qml/*.qml"
 )
 
 qt_add_qml_module(appAginTV
     URI AginTV
+    VERSION 1.0
     SOURCES
         input/inputaction.h
         input/inputprovider.h input/inputprovider.cpp
