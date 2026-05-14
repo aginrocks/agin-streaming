@@ -13,7 +13,7 @@ Window {
     title: qsTr("Agin TV Navigation Demo")
     color: Theme.colors.background
 
-    property string source: "https://image.tmdb.org/t/p/original/dGOZdWOB8OpZFVziEOUFhox5wz9.jpg"
+    property string source: "https://image.tmdb.org/t/p/original/6bzabqH399ioM3nZScwZtzGaHIy.jpg"
 
     Hero {
         activeSource: window.source

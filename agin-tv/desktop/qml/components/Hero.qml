@@ -5,13 +5,17 @@ Item {
     width: parent.width
     height: parent.height
 
-    property alias activeSource: heroImage.source
+    property alias activeSource: heroImage.activeSource
 
-    Image {
+    // Image {
+    //     id: heroImage
+    //     anchors.fill: parent
+    //     source: root.activeSource
+    //     fillMode: Image.PreserveAspectCrop
+    //     smooth: true
+    // }
+    DynamicBackground {
         id: heroImage
-        anchors.fill: parent
-        source: root.activeSource
-        fillMode: Image.PreserveAspectCrop
-        smooth: true
+        baseColor: "#1a1110"
     }
 }

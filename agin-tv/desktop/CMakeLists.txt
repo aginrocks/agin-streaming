@@ -38,13 +38,13 @@ qt_add_resources(QJoysticks "qjoysticks_resources"
 
 set(_QJOYSTICKS_SDL_TARGET "")
 if(TARGET SDL2::SDL2)
-    set(_QJOYSTICKS_SDL_TARGET SDL2::SDL2)
+  set(_QJOYSTICKS_SDL_TARGET SDL2::SDL2)
 elseif(TARGET SDL2::SDL2-static)
-    set(_QJOYSTICKS_SDL_TARGET SDL2::SDL2-static)
+  set(_QJOYSTICKS_SDL_TARGET SDL2::SDL2-static)
 elseif(SDL2_LIBRARIES)
-    set(_QJOYSTICKS_SDL_TARGET ${SDL2_LIBRARIES})
+  set(_QJOYSTICKS_SDL_TARGET ${SDL2_LIBRARIES})
 else()
-    message(FATAL_ERROR "SDL2 package did not expose link targets or library list")
+  message(FATAL_ERROR "SDL2 package did not expose link targets or library list")
 endif()
 
 target_link_libraries(QJoysticks
@@ -151,6 +151,7 @@ qt_add_qml_module(appAginTV
         qml/components/Cover.qml
         qml/components/RoundedImage.qml
         qml/components/Hero.qml
+        qml/components/DynamicBackground.qml
     SOURCES
         input/inputaction.h
         input/inputprovider.h input/inputprovider.cpp
