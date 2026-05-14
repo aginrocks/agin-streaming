@@ -13,11 +13,11 @@ Window {
     title: qsTr("Agin TV Navigation Demo")
     color: Theme.colors.background
 
-    property string source: "https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg"
+    property string source: "https://image.tmdb.org/t/p/original/dGOZdWOB8OpZFVziEOUFhox5wz9.jpg"
 
-    // Hero {
-    //     activeSource: window.source
-    // }
+    Hero {
+        activeSource: window.source
+    }
 
     Item {
         anchors.fill: parent
@@ -29,7 +29,7 @@ Window {
             Button {
                 text: "Toggle Source"
                 onClicked: {
-                    window.source = window.source.includes("rAiYTfKGqDCRIIqo664sY9XZIvQ") ? "https://image.tmdb.org/t/p/original/iN41Ccw4DctL8npfmYg1j5Tr1eb.jpg" : "https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg";
+                    window.source = window.source.includes("rAiYTfKGqDCRIIqo664sY9XZIvQ") ? "https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg" : "https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg";
                 }
             }
 

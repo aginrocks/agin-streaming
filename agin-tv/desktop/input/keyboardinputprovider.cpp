@@ -18,6 +18,9 @@ void KeyboardInputProvider::setupKeyMap() {
 }
 
 bool KeyboardInputProvider::handleKeyEvent(QKeyEvent* event) {
+    qDebug() << "Keyboard event:" << event->key() << event->nativeVirtualKey()
+             << event->type();
+
     auto it = m_keyMap.constFind(event->key());
     if (it == m_keyMap.constEnd())
         return false;
