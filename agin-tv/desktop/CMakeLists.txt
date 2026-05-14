@@ -152,6 +152,7 @@ qt_add_qml_module(appAginTV
         qml/components/RoundedImage.qml
         qml/components/Hero.qml
         qml/components/DynamicBackground.qml
+        qml/components/HeaderSurface.qml
     SOURCES
         input/inputaction.h
         input/inputprovider.h input/inputprovider.cpp

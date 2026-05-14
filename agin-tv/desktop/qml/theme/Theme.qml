@@ -6,6 +6,7 @@ QtObject {
     readonly property Spacing spacing: Spacing {}
     readonly property Radius radius: Radius {}
     readonly property Colors colors: Colors {}
+    readonly property SafeArea safeArea: SafeArea {}
     readonly property Animations animations: Animations {}
 
     component Spacing: QtObject {
@@ -76,6 +77,16 @@ QtObject {
         // Shadow
         readonly property color shadow: Qt.rgba(0, 0, 0, 0.6)
         readonly property color shadowLight: Qt.rgba(0, 0, 0, 0.2)
+
+        // Semi-transparent surface
+        readonly property color transparentSurface: Qt.rgba(255, 255, 255, 0.1)
+    }
+
+    component SafeArea: QtObject {
+        readonly property int left: Theme.spacing.s(24)
+        readonly property int right: Theme.spacing.s(24)
+        readonly property int top: Theme.spacing.s(16)
+        readonly property int bottom: Theme.spacing.s(16)
     }
 
     component Animations: QtObject {

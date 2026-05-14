@@ -19,6 +19,19 @@ Window {
         activeSource: window.source
     }
 
+    HeaderSurface {
+        anchors {
+            top: parent.top
+            right: parent.right
+            topMargin: Theme.safeArea.top
+            rightMargin: Theme.safeArea.right
+        }
+
+        Button {
+            text: "Toggle Source"
+        }
+    }
+
     Item {
         anchors.fill: parent
         anchors.margins: Theme.spacing.s(12)
