@@ -12,7 +12,7 @@ Item {
         id: backgroundImage
         anchors.fill: parent
         anchors {
-            bottomMargin: parent.height * 0.2
+            bottomMargin: parent.height * 0.15
         }
         source: root.activeSource
         fillMode: Image.PreserveAspectCrop
@@ -28,7 +28,7 @@ Item {
                 color: Qt.alpha(root.baseColor, 0.45)
             }
             GradientStop {
-                position: 0.5
+                position: 0.4
                 color: Qt.alpha(root.baseColor, 0.6)
             }
             GradientStop {
