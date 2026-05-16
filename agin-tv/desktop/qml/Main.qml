@@ -22,11 +22,7 @@ Window {
         }
     }
 
-    // Fonts {}
-    FontLoader {
-        id: font
-        source: "qrc:/qt/qml/AginTV/fonts/GoogleSansFlex.ttf"
-    }
+    Fonts {}
 
     Hero {
         activeSource: window.source
@@ -52,7 +48,7 @@ Window {
                 id: myText
                 text: "09:41"
                 color: "white"
-                font.family: font.name
+                font.family: "Google Sans Flex"
                 // font.weight: window.weight
                 font.pointSize: 24
                 font.variableAxes: {
