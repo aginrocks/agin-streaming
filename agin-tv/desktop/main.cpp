@@ -7,6 +7,7 @@
 #include <QQmlApplicationEngine>
 #include <QQuickItem>
 #include <QQuickWindow>
+#include <QFontDatabase>
 
 #include "input/gamepadinputprovider.h"
 #include "input/inputdispatcher.h"

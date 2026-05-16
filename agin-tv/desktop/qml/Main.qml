@@ -14,6 +14,19 @@ Window {
     color: Theme.colors.background
 
     property string source: "https://image.tmdb.org/t/p/original/6bzabqH399ioM3nZScwZtzGaHIy.jpg"
+    property real weight: 400
+
+    Behavior on weight {
+        NumberAnimation {
+            duration: 300
+        }
+    }
+
+    // Fonts {}
+    FontLoader {
+        id: font
+        source: "qrc:/qt/qml/AginTV/fonts/GoogleSansFlex.ttf"
+    }
 
     Hero {
         activeSource: window.source
@@ -34,6 +47,33 @@ Window {
 
         ColumnLayout {
             spacing: Theme.spacing.s(4)
+
+            Text {
+                id: myText
+                text: "09:41"
+                color: "white"
+                font.family: font.name
+                // font.weight: window.weight
+                font.pointSize: 24
+                font.variableAxes: {
+                    "ROND": 100,
+                    "GRAD": 0,
+                    "slnt": 0,
+                    "wdth": 100,
+                    "wght": window.weight
+                }
+            }
+
+            Button {
+                text: ":-)"
+                onClicked: {
+                    if (window.weight === 700) {
+                        window.weight = 400;
+                    } else {
+                        window.weight = 700;
+                    }
+                }
+            }
 
             Button {
                 text: "Toggle Source"

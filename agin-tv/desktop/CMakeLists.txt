@@ -149,6 +149,11 @@ file(GLOB_RECURSE AGIN_TV_QML_FILES
     "qml/*.qml"
 )
 
+file(GLOB AGIN_TV_FONTS
+    RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}
+    "fonts/*.ttf"
+)
+
 qt_add_qml_module(appAginTV
     URI AginTV
     VERSION 1.0
@@ -165,6 +170,8 @@ qt_add_qml_module(appAginTV
         navigation/navigationnode.h
     QML_FILES
         ${AGIN_TV_QML_FILES}
+    RESOURCES
+        ${AGIN_TV_FONTS}
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
