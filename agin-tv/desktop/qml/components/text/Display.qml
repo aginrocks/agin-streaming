@@ -4,51 +4,45 @@ import AginTV
 BaseText {
     id: root
 
-    enum Level {
-        H1 = 1,
-        H2 = 2,
-        H3 = 3,
-        H4 = 4,
-        H5 = 5,
-        H6 = 6
+    enum Size {
+        Large,
+        Medium,
+        Small
     }
+    property int size: Display.Size.Large
 
-    property int level: Heading.Level.H1
+    lineHeightMode: Text.FixedHeight
 
-    function fontSize(level) {
-        switch (level) {
-        case Heading.Level.H1:
-            return Theme.spacing.s(12);
-        case Heading.Level.H2:
-            return Theme.spacing.s(10);
-        case Heading.Level.H3:
-            return Theme.spacing.s(8);
-        case Heading.Level.H4:
-            return Theme.spacing.s(7);
-        case Heading.Level.H5:
-            return Theme.spacing.s(6);
-        case Heading.Level.H6:
-            return Theme.spacing.s(5);
+    font.pixelSize: {
+        switch (size) {
+        case Display.Size.Large:
+            return Theme.spacing.s(14.25);
+        case Display.Size.Medium:
+            return Theme.spacing.s(11.25);
+        case Display.Size.Small:
+            return Theme.spacing.s(9);
         default:
-            return Theme.spacing.s(6);
+            return Theme.spacing.s(14.25);
         }
     }
 
-    function fontWeight(level) {
-        switch (level) {
-        case Heading.Level.H1:
-        case Heading.Level.H2:
-            return 600;
-        case Heading.Level.H3:
-            return 550;
+    lineHeight: {
+        switch (size) {
+        case Display.Size.Large:
+            return Theme.spacing.s(16);
+        case Display.Size.Medium:
+            return Theme.spacing.s(13);
+        case Display.Size.Small:
+            return Theme.spacing.s(11);
         default:
-            return 500;
+            return Theme.spacing.s(16);
         }
     }
 
-    font.pixelSize: fontSize(level)
-    font.variableAxes: {
-        "ROND": 100,
-        "wght": fontWeight(level)
-    }
+    font.letterSpacing: size === Display.Size.Large ? -0.25 : 0
+
+    font.variableAxes: ({
+            "ROND": 0,
+            "wght": 500
+        })
 }

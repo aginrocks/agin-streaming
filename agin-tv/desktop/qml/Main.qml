@@ -44,9 +44,8 @@ Window {
         ColumnLayout {
             spacing: Theme.spacing.s(4)
 
-            Heading {
-                level: Heading.Level.H1
-                text: "Stargate: SG-1"
+            Display {
+                text: "Agin TV"
             }
 
             Text {
