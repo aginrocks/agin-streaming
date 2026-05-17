@@ -44,6 +44,11 @@ Window {
         ColumnLayout {
             spacing: Theme.spacing.s(4)
 
+            Heading {
+                level: Heading.Level.H1
+                text: "Stargate: SG-1"
+            }
+
             Text {
                 id: myText
                 text: "09:41"

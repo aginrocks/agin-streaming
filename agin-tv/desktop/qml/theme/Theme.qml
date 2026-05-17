@@ -3,12 +3,11 @@ import QtQml 6.8
 import QtQuick 6.8
 
 QtObject {
-    readonly property string primaryFont: "Google Sans Flex"
 
     readonly property Spacing spacing: Spacing {}
     readonly property Radius radius: Radius {}
     readonly property Colors colors: Colors {}
-    readonly property Text text: Text {}
+    readonly property Typography typography: Typography {}
     readonly property SafeArea safeArea: SafeArea {}
     readonly property Animations animations: Animations {}
 
@@ -85,14 +84,16 @@ QtObject {
         readonly property color transparentSurface: Qt.rgba(255, 255, 255, 0.1)
     }
 
-    component Text: QtObject {
-        readonly property font headingLarge: Qt.font({
-            family: Theme.primaryFont,
-            pixelSize: Theme.spacing.s(12),
-            variableAxes: {
-                "wght": 700
-            }
-        })
+    component Typography: QtObject {
+        readonly property string primaryFont: "Google Sans Flex"
+
+        // readonly property font headingLarge: Qt.font({
+        //     family: primaryFont,
+        //     pixelSize: Theme.spacing.s(12),
+        //     variableAxes: {
+        //         "wght": 700
+        //     }
+        // })
     }
 
     component SafeArea: QtObject {
