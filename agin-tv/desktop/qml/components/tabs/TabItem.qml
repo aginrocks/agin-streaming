@@ -1,7 +1,7 @@
 import QtQuick
 import AginTV
 
-Rectangle {
+Item {
     id: root
 
     property alias label: text.text
@@ -10,9 +10,6 @@ Rectangle {
 
     implicitWidth: textStub.width + Theme.spacing.s(8)
     implicitHeight: textStub.height + Theme.spacing.s(4)
-
-    color: active ? Theme.colors.primary : "transparent"
-    radius: height / 2
 
     // Stub needed in order to have fixed width when changing font weight
     TextMetrics {
