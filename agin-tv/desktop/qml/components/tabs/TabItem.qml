@@ -8,11 +8,24 @@ Rectangle {
 
     property bool active: false
 
-    implicitWidth: text.implicitWidth + Theme.spacing.s(8)
-    implicitHeight: text.implicitHeight + Theme.spacing.s(4)
+    implicitWidth: textStub.width + Theme.spacing.s(8)
+    implicitHeight: textStub.height + Theme.spacing.s(4)
 
     color: active ? Theme.colors.primary : "transparent"
     radius: height / 2
+
+    // Stub needed in order to have fixed width when changing font weight
+    TextMetrics {
+        id: textStub
+
+        text: root.label
+        font.family: text.font.family
+        font.pixelSize: text.font.pixelSize
+        font.letterSpacing: text.font.letterSpacing
+        font.variableAxes: ({
+                "wght": 400
+            })
+    }
 
     Title {
         id: text
