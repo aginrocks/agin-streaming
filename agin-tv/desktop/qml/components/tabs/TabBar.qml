@@ -8,13 +8,45 @@ Item {
     implicitWidth: surface.implicitWidth
     implicitHeight: surface.implicitHeight
 
-    readonly property var tabs: ["Home", "Live", "Library"]
+    property var tabs: ["Home", "Live", "Library"]
 
     property int activeTab: 0
 
+    // Indicator that floats below the tabs
     Rectangle {
-        property var target: repeater.itemAt(root.activeTab)
+        id: indicator
+
+        // Used to prevent animations during initial render
+        property bool animate: false
+        property var target: null
         property point mapped: target ? target.mapToItem(parent, 0, 0) : Qt.point(0, 0)
+
+        function updateTarget() {
+            target = repeater.itemAt(root.activeTab);
+        }
+
+        Component.onCompleted: {
+            updateTarget();
+            Qt.callLater(() => {
+                animate = true;
+            });
+        }
+
+        // Watch tab bar items updates
+        Connections {
+            target: repeater
+            function onItemAdded(index, item) {
+                indicator.updateTarget();
+            }
+        }
+
+        // Watch active tab updates
+        Connections {
+            target: root
+            function onActiveTabChanged() {
+                indicator.updateTarget();
+            }
+        }
 
         x: mapped.x
         y: mapped.y
@@ -22,12 +54,14 @@ Item {
         height: target ? target.height : 0
 
         Behavior on x {
+            enabled: indicator.animate
             NumberAnimation {
                 duration: Theme.animations.duration
                 easing: Theme.animations.easing
             }
         }
         Behavior on width {
+            enabled: indicator.animate
             NumberAnimation {
                 duration: Theme.animations.duration
             }
@@ -35,7 +69,6 @@ Item {
 
         color: Theme.colors.primary
         radius: height / 2
-        anchors.fill: repeater.itemAt(root.activeTab)
     }
 
     HeaderSurface {
