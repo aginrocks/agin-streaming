@@ -8,7 +8,7 @@ Item {
     implicitWidth: surface.implicitWidth
     implicitHeight: surface.implicitHeight
 
-    property var tabs: ["Home", "Live", "Library"]
+    property var tabs: ["Home", "Live", "Library", "a", "very", "long", "tab", "bar"]
 
     property int activeTab: 0
 
@@ -55,9 +55,11 @@ Item {
 
         Behavior on x {
             enabled: indicator.animate
-            NumberAnimation {
+            SpringAnimation {
                 duration: Theme.animations.duration
                 easing: Theme.animations.easing
+                spring: 1.2
+                damping: 0.2
             }
         }
         Behavior on width {
