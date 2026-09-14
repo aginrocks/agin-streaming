@@ -8,7 +8,10 @@ Item {
     implicitWidth: surface.implicitWidth
     implicitHeight: surface.implicitHeight
 
-    property var tabs: ["Home", "Live", "Library", "a", "very", "long", "tab", "bar"]
+    // Navigable.canNavigate: true
+    // Navigable.isScope: true
+
+    property var tabs: ["Home", "Live", "Library"]//, "a", "very", "long", "tab", "bar"]
 
     property int activeTab: 0
 
@@ -56,10 +59,10 @@ Item {
         Behavior on x {
             enabled: indicator.animate
             SpringAnimation {
-                duration: Theme.animations.duration
                 easing: Theme.animations.easing
-                spring: 1.2
+                spring: 1.4
                 damping: 0.2
+                mass: 0.8
             }
         }
         Behavior on width {
@@ -83,6 +86,9 @@ Item {
             TabItem {
                 required property string modelData
                 required property int index
+
+                // Navigable.canNavigate: true
+
                 label: modelData
                 active: root.activeTab === index
 

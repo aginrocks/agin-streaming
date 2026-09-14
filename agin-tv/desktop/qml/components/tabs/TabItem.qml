@@ -7,6 +7,7 @@ Item {
     property alias label: text.text
 
     property bool active: false
+    property bool barFocused: false
 
     implicitWidth: textStub.width + Theme.spacing.s(8)
     implicitHeight: textStub.height + Theme.spacing.s(4)
