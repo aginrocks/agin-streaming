@@ -4,7 +4,7 @@ import QtQuick.VirtualKeyboard 6.8
 import QtQuick.Controls 6.8
 import QtQuick.Layouts 6.8
 import AginTV
-import "request.js" as XHR
+import "js/request.js" as XHR
 
 Window {
     id: window
