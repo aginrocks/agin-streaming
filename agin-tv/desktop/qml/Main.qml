@@ -4,6 +4,7 @@ import QtQuick.VirtualKeyboard 6.8
 import QtQuick.Controls 6.8
 import QtQuick.Layouts 6.8
 import AginTV
+import "request.js" as XHR
 
 Window {
     id: window
@@ -81,7 +82,50 @@ Window {
                     window.source = window.source.includes("rAiYTfKGqDCRIIqo664sY9XZIvQ") ? "https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg" : "https://image.tmdb.org/t/p/original/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg";
                 }
             }
+            RowLayout {
+                Layout.fillWidth: true
 
+                TextField {
+                    id: urlTextField
+                    text: "https://api.themoviedb.org/3/search/movie?query=Jack+Reacher"
+                    Layout.fillWidth: true
+                }
+                TextField {
+                    id: urlTokenField
+                    text: "https://api.themoviedb.org/3/search/movie?query=Jack+Reacher"
+                    Layout.fillWidth: true
+                }
+                Button {
+                    text: qsTr("Sent")
+                    onClicked: {
+                        XHR.sendRequest(urlTextField.text, urlTokenField.text, function (response) {
+                            print(response.status);
+                            print(response.content);
+                        });
+                    }
+                }
+            }
+
+            /*
+            PathView{
+                id: view
+                width: window.maximumWidth
+                model: 20
+                //pathItemCount: 6
+                delegate: Cover {
+                    source: index % 2 == 0 ? "https://image.tmdb.org/t/p/w1280/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg"
+                    : "https://image.tmdb.org/t/p/w1280/iN41Ccw4DctL8npfmYg1j5Tr1eb.jpg"
+                    Navigable.canNavigate: true
+                    isSelected: Navigable.hasFocus
+                }
+                path: Path {
+                    startX: 0
+                    startY: 0
+                    PathLine { x: view.width; y: view.height }
+                }
+            }
+
+             */
             RowLayout {
                 spacing: Theme.spacing.s(4)
 
