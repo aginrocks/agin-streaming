@@ -1,9 +1,6 @@
 function sendRequest(url, token, callback) {
   let request = new XMLHttpRequest();
 
-  console.log("URL:", url);
-  console.log("Token:", token);
-
   request.open("GET", url);
   request.setRequestHeader("Authorization", `Bearer ${token}`);
   request.onreadystatechange = function () {

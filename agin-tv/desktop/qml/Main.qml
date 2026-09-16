@@ -93,20 +93,29 @@ Window {
                 TextField {
                     id: urlTokenField
                     text: preferences.tmdbTOKEN
-                    onDisplayTextChanged: {
-                        print("__DEBUG__");
-                        print(preferences.tmdbTOKEN);
-                    }
                     Layout.fillWidth: true
+                    onTextChanged: {
+                        preferences.tmdbTOKEN = urlTokenField.text;
+                    }
                 }
                 Button {
                     text: qsTr("Sent")
                     onClicked: {
                         XHR.sendRequest(urlTextField.text, urlTokenField.text, function (response) {
-                            print(response.status);
-                            print(response.content);
+                            const json = JSON.parse(response.content);
+
+                            var component = Qt.createComponent("components/Cover.qml");
+                            for (const i of json.results) {
+                                if (!i.poster_path)
+                                    continue;
+                                var object = component.createObject(container);
+                                if (!object) {
+                                    console.error("Failed to create Cover.qml object");
+                                    return;
+                                }
+                                object.source = `https://image.tmdb.org/t/p/original${i.poster_path}`;
+                            }
                         });
-                        preferences.tmdbTOKEN = urlTokenField.text;
                     }
                 }
             }
@@ -132,8 +141,8 @@ Window {
 
              */
             RowLayout {
+                id: container
                 spacing: Theme.spacing.s(4)
-
                 Cover {
                     source: "https://image.tmdb.org/t/p/w1280/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg"
                     Navigable.canNavigate: true

@@ -6,9 +6,9 @@
 #include <QGuiApplication>
 #include <QKeyEvent>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include <QQuickItem>
 #include <QQuickWindow>
-#include <QQmlContext>
 
 #include "input/gamepadinputprovider.h"
 #include "input/inputdispatcher.h"
@@ -106,7 +106,6 @@ int main(int argc, char* argv[]) {
         }
     );
 
-
     /*
     auto preferences = new User::Preferences(&engine);
     QObject::connect(
@@ -116,8 +115,15 @@ int main(int argc, char* argv[]) {
         [preferences](QObject* obj) {}
     );
     */
-    User::Preferences preferences;
-    engine.rootContext()->setContextProperty("preferences", &preferences);
+
+    // https://doc.qt.io/qt-6/qtjavascript.html#making-a-qobject-available-to-the-script-engine
+    QObject* preferences = new User::Preferences;
+    QJSValue objectValue = engine.newQObject(preferences);
+    engine.globalObject().setProperty("preferences", objectValue);
+
+    // ai version
+    //User::Preferences preferences;
+    //engine.rootContext()->setContextProperty("preferences", &preferences);
 
     engine.loadFromModule("AginTV", "Main");
     qDebug() << "Starting App";
