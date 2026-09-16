@@ -2,17 +2,19 @@
 
 #include <QDebug>
 #include <QEvent>
+#include <QFontDatabase>
 #include <QGuiApplication>
 #include <QKeyEvent>
 #include <QQmlApplicationEngine>
 #include <QQuickItem>
 #include <QQuickWindow>
-#include <QFontDatabase>
+#include <QQmlContext>
 
 #include "input/gamepadinputprovider.h"
 #include "input/inputdispatcher.h"
 #include "input/keyboardinputprovider.h"
 #include "navigation/navigationmanager.h"
+#include "preferences/preferences.h"
 
 class MyApp: public QGuiApplication {
     Q_OBJECT
@@ -103,6 +105,20 @@ int main(int argc, char* argv[]) {
             }
         }
     );
+
+
+    /*
+    auto preferences = new User::Preferences(&engine);
+    QObject::connect(
+        &engine,
+        &QQmlApplicationEngine::objectCreated,
+        preferences,
+        [preferences](QObject* obj) {}
+    );
+    */
+    User::Preferences preferences;
+    engine.rootContext()->setContextProperty("preferences", &preferences);
+
     engine.loadFromModule("AginTV", "Main");
     qDebug() << "Starting App";
     return app.exec();

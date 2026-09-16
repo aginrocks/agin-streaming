@@ -92,7 +92,11 @@ Window {
                 }
                 TextField {
                     id: urlTokenField
-                    text: "https://api.themoviedb.org/3/search/movie?query=Jack+Reacher"
+                    text: preferences.tmdbTOKEN
+                    onDisplayTextChanged: {
+                        print("__DEBUG__");
+                        print(preferences.tmdbTOKEN);
+                    }
                     Layout.fillWidth: true
                 }
                 Button {
@@ -102,6 +106,7 @@ Window {
                             print(response.status);
                             print(response.content);
                         });
+                        preferences.tmdbTOKEN = urlTokenField.text;
                     }
                 }
             }
