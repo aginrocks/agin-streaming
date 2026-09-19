@@ -39,7 +39,7 @@ pub async fn init_axum(
 
     let (router, api) = router.with_state(state.clone()).split_for_parts();
 
-    let openapi_prefix = "/apidoc";
+    let openapi_prefix = "/openapi";
     let spec_name = "/openapi.json";
 
     let docs = Router::new()

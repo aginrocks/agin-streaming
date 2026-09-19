@@ -9,6 +9,7 @@ pub struct Model {
     pub role: Role,
     pub subject: String,
     pub username: String,
+    #[sea_orm(unique)]
     pub email: String,
 }
 

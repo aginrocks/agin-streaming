@@ -1,7 +1,9 @@
+mod demo_bootstrap;
 mod entity;
 mod errors;
 mod importer;
 mod init;
+pub mod middlewares;
 mod plugins;
 mod routes;
 mod settings;
@@ -16,6 +18,7 @@ use tracing::{info, level_filters::LevelFilter};
 use utoipa::OpenApi;
 
 use crate::{
+    demo_bootstrap::demo_bootstrap,
     init::{init_axum, init_database, init_listener, init_plugins, init_tmdb, init_tracing},
     settings::Settings,
     state::AppState,
@@ -56,6 +59,9 @@ async fn main() -> Result<()> {
         tmdb,
         plugins,
     };
+
+    //TODO: Delete this after implementing proper auth flow
+    demo_bootstrap(&app_state).await?;
 
     let app = init_axum(app_state).await?;
     let listener = init_listener(&settings).await?;
