@@ -9,8 +9,8 @@ Item {
     property bool active: false
     property bool barFocused: false
 
-    implicitWidth: textStub.width + Theme.spacing.s(8)
-    implicitHeight: textStub.height + Theme.spacing.s(4)
+    implicitWidth: textStub.width + Theme.spacing.s(12)
+    implicitHeight: textStub.height + Theme.spacing.s(6)
 
     // Stub needed in order to have fixed width when changing font weight
     TextMetrics {
