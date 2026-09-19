@@ -87,20 +87,40 @@ QtObject {
     component Typography: QtObject {
         readonly property string primaryFont: "Google Sans Flex"
 
-        // readonly property font headingLarge: Qt.font({
-        //     family: primaryFont,
-        //     pixelSize: Theme.spacing.s(12),
-        //     variableAxes: {
-        //         "wght": 700
-        //     }
-        // })
+        // Logical pixels; independent of layout spacing. Sizes are Large, Medium, Small.
+        // Keep essential copy at Body.Medium or larger; Label.Small is for metadata.
+        readonly property var display: [
+            { pixelSize: 64, lineHeight: 76, weight: 600, letterSpacing: 0 },
+            { pixelSize: 56, lineHeight: 68, weight: 600, letterSpacing: 0 },
+            { pixelSize: 48, lineHeight: 60, weight: 600, letterSpacing: 0 }
+        ]
+        readonly property var headline: [
+            { pixelSize: 48, lineHeight: 60, weight: 600, letterSpacing: 0 },
+            { pixelSize: 40, lineHeight: 52, weight: 600, letterSpacing: 0 },
+            { pixelSize: 36, lineHeight: 48, weight: 600, letterSpacing: 0 }
+        ]
+        readonly property var title: [
+            { pixelSize: 32, lineHeight: 44, weight: 600, letterSpacing: 0 },
+            { pixelSize: 28, lineHeight: 40, weight: 600, letterSpacing: 0 },
+            { pixelSize: 24, lineHeight: 32, weight: 600, letterSpacing: 0 }
+        ]
+        readonly property var body: [
+            { pixelSize: 28, lineHeight: 40, weight: 400, letterSpacing: 0.25 },
+            { pixelSize: 24, lineHeight: 36, weight: 400, letterSpacing: 0.25 },
+            { pixelSize: 22, lineHeight: 32, weight: 400, letterSpacing: 0.25 }
+        ]
+        readonly property var label: [
+            { pixelSize: 24, lineHeight: 32, weight: 500, letterSpacing: 0.5 },
+            { pixelSize: 22, lineHeight: 32, weight: 500, letterSpacing: 0.5 },
+            { pixelSize: 20, lineHeight: 28, weight: 500, letterSpacing: 0.5 }
+        ]
     }
 
     component SafeArea: QtObject {
-        readonly property int left: Theme.spacing.s(24)
-        readonly property int right: Theme.spacing.s(24)
-        readonly property int top: Theme.spacing.s(16)
-        readonly property int bottom: Theme.spacing.s(16)
+        readonly property int left: Theme.spacing.s(14)
+        readonly property int right: Theme.spacing.s(14)
+        readonly property int top: Theme.spacing.s(10)
+        readonly property int bottom: Theme.spacing.s(10)
     }
 
     component Animations: QtObject {

@@ -20,8 +20,9 @@ Item {
         font.family: text.font.family
         font.pixelSize: text.font.pixelSize
         font.letterSpacing: text.font.letterSpacing
+        font.weight: Font.DemiBold
         font.variableAxes: ({
-                "wght": 400
+                "wght": 600
             })
     }
 
@@ -29,7 +30,7 @@ Item {
         id: text
         anchors.centerIn: parent
 
-        property real textWeight: root.active ? 550 : 400
+        property real textWeight: root.active ? 600 : 500
         property color textColor: root.active ? Theme.colors.primaryForeground : Theme.colors.primary
 
         Behavior on textWeight {
@@ -44,6 +45,7 @@ Item {
             }
         }
 
+        font.weight: root.active ? Font.DemiBold : Font.Medium
         color: textColor
         font.variableAxes: ({
                 "wght": textWeight
