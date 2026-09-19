@@ -1,4 +1,5 @@
 #include <QJoysticks.h>
+#include <qguiapplication.h>
 
 #include <QDebug>
 #include <QEvent>
@@ -10,6 +11,7 @@
 #include <QQuickItem>
 #include <QQuickWindow>
 
+#include "controllers/login.h"
 #include "input/gamepadinputprovider.h"
 #include "input/inputdispatcher.h"
 #include "input/keyboardinputprovider.h"
@@ -111,6 +113,10 @@ int main(int argc, char* argv[]) {
     QObject* preferences = new User::Preferences;
     QJSValue objectValue = engine.newQObject(preferences);
     engine.globalObject().setProperty("preferences", objectValue);
+
+    QObject* loginController = new UILogic::LoginController;
+    QJSValue objectValue1 = engine.newQObject(loginController);
+    engine.globalObject().setProperty("loginController", objectValue1);
 
     // ai version
     //User::Preferences preferences;

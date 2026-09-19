@@ -171,6 +171,7 @@ qt_add_qml_module(appAginTV
         navigation/navigationmanager.h navigation/navigationmanager.cpp
         navigation/navigationnode.h
         preferences/preferences.h
+        controllers/login.h
     QML_FILES
         ${AGIN_TV_QML_FILES}
     RESOURCES

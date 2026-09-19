@@ -23,7 +23,6 @@ Window {
         z: -1
         activeSource: window.source
     }
-
     /*
     TabBar {
         anchors {
