@@ -1,6 +1,6 @@
-[submodule "agin-tv/desktop/external/QJoysticks"]
-	path = agin-tv/desktop/external/QJoysticks
+[submodule "desktop/external/QJoysticks"]
+	path = desktop/external/QJoysticks
 	url = https://github.com/alex-spataru/QJoysticks
-[submodule "agin-tv/desktop/external/material-color-utilities"]
-	path = agin-tv/desktop/external/material-color-utilities
+[submodule "desktop/external/material-color-utilities"]
+	path = desktop/external/material-color-utilities
 	url = https://github.com/material-foundation/material-color-utilities.git

@@ -1,10 +1,10 @@
 [workspace]
 resolver = "2"
 members = [
-    "agin-tv/example-plugin",
-    "agin-tv/plugin-host",
-    "agin-tv/plugin-sdk",
-    "agin-tv/plugin-sdk-macros",
-    "agin-tv/proto/plugin",
-    "agin-tv/server",
+    "plugins/example-plugin",
+    "plugins/plugin-host",
+    "plugins/plugin-sdk",
+    "plugins/plugin-sdk-macros",
+    "proto/plugin",
+    "server",
 ]

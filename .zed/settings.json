@@ -3,7 +3,7 @@
     "clangd": {
       "binary": {
         "arguments": [
-          "--compile-commands-dir=agin-tv/desktop/build/Desktop-Debug",
+          "--compile-commands-dir=desktop/build/Desktop-Debug",
         ],
       },
     },
