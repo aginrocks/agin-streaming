@@ -1,8 +1,7 @@
-import QtQuick 6.8
-import QtQuick.Window 6.8
-import QtQuick.VirtualKeyboard 6.8
-import QtQuick.Controls 6.8
-import QtQuick.Layouts 6.8
+import QtQuick
+import QtQuick.Window
+import QtQuick.Controls
+import QtQuick.Layouts
 import AginTV
 import "js/request.js" as XHR
 
@@ -16,27 +15,23 @@ Window {
 
     property string source: "https://image.tmdb.org/t/p/original/6bzabqH399ioM3nZScwZtzGaHIy.jpg"
     property real weight: 400
-
-    Behavior on weight {
-        NumberAnimation {
-            duration: 300
-        }
+    Login {
+        z: 1
+        anchors.centerIn: parent
     }
-
-    Fonts {}
-
     Hero {
+        z: -1
         activeSource: window.source
-
-        CoverRow {}
     }
 
+    /*
     TabBar {
         anchors {
             top: parent.top
-            left: parent.left
+            left: parent.right
             topMargin: Theme.safeArea.top
             leftMargin: Theme.safeArea.left
         }
     }
+     */
 }

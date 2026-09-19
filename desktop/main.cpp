@@ -67,18 +67,17 @@ void enableVirtualJoystick() {
 }
 
 int main(int argc, char* argv[]) {
-    qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
+    //qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
     MyApp app(argc, argv);
-
+    QQmlApplicationEngine engine;
+    qDebug() << engine.importPathList();
+    /*
     auto keyboardProvider = setupInput();
     app.setKeyboardProvider(keyboardProvider);
 
     enableVirtualJoystick();
 
-    QQmlApplicationEngine engine;
-
-    qDebug() << engine.importPathList();
 
     auto navigationManager = new NavigationManager(&engine);
     InputDispatcher::instance()->setNavigationManager(navigationManager);
@@ -106,14 +105,6 @@ int main(int argc, char* argv[]) {
         }
     );
 
-    /*
-    auto preferences = new User::Preferences(&engine);
-    QObject::connect(
-        &engine,
-        &QQmlApplicationEngine::objectCreated,
-        preferences,
-        [preferences](QObject* obj) {}
-    );
     */
 
     // https://doc.qt.io/qt-6/qtjavascript.html#making-a-qobject-available-to-the-script-engine
