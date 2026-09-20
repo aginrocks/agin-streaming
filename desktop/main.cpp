@@ -1,5 +1,9 @@
 #include <QJoysticks.h>
 #include <qguiapplication.h>
+#include <qobject.h>
+#include <qqml.h>
+#include <qqmlcontext.h>
+#include <qquickview.h>
 
 #include <QDebug>
 #include <QEvent>
@@ -9,6 +13,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickItem>
+#include <QQuickView>
 #include <QQuickWindow>
 
 #include "controllers/login.h"
@@ -115,12 +120,11 @@ int main(int argc, char* argv[]) {
     engine.globalObject().setProperty("preferences", objectValue);
 
     QObject* loginController = new UILogic::LoginController;
-    QJSValue objectValue1 = engine.newQObject(loginController);
-    engine.globalObject().setProperty("loginController", objectValue1);
-
-    // ai version
-    //User::Preferences preferences;
-    //engine.rootContext()->setContextProperty("preferences", &preferences);
+    //engine.rootContext()->setContextObject(loginController);
+    //QJSValue objectValue1 = engine.newQObject(loginController);
+    //engine.globalObject().setProperty("loginController", objectValue1);
+    //engine.rootContext()->setContextObject(loginController);
+    engine.rootContext()->setContextProperty("loginController",loginController);
 
     engine.loadFromModule("AginTV", "Main");
     qDebug() << "Starting App";

@@ -18,6 +18,7 @@ Window {
     Login {
         z: 1
         anchors.centerIn: parent
+        visible: !loginController.isLogged
     }
     Hero {
         z: -1

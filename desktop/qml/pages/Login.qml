@@ -28,7 +28,8 @@ Item {
             Layout.alignment: Qt.AlignHCenter
             text: "Submit"
             onClicked: {
-                print(loginController.login);
+                print("Trying to log in");
+                loginController.login();
             }
         }
     }
